@@ -1,0 +1,8 @@
+MORIA (10, 2, 6, "Aventura"),
+MINAS_TIRITH (5, 2.5, 25 , "Paisaje"),
+LA_COMARCA (3, 6.5, 150, "Degustación"),
+MORDOR (25, 3, 4, "Aventura"),
+ABISMO_DE_HELM (5, 2, 15, "Paisaje"),
+LOTHLÓRIEN (35, 1, 30, "Degustación"),
+EREBOR (12, 3, 32, "Paisaje"),
+BOSQUE_NEGRO (3, 4, 12, "Aventura");
