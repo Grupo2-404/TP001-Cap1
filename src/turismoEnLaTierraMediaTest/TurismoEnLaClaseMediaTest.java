@@ -17,7 +17,7 @@ public class TurismoEnLaClaseMediaTest {
 
 	
 	@Before
-	public void preparacion() {
+	public void preparacion() throws InvalidNumberException {
         App tierraMedia = new App(50,20,10);
         Usuario Axel = new Usuario("Axel", TipoDeAtraccion.AVENTURA, 10000, 12.00);	
         Usuario Bruno = new Usuario("Bruno", TipoDeAtraccion.DEGUSTACION, 5000, 4.00);
@@ -74,7 +74,7 @@ public class TurismoEnLaClaseMediaTest {
     }
 
     @Test
-   	public void agregarNuevosUsuariosAlSistema() {
+   	public void agregarNuevosUsuariosAlSistema() throws InvalidNumberException {
 
        App sistema = new App(50,20,10);
 

@@ -12,9 +12,7 @@ public class PromocionPorcentual extends Promocion {
 		super.setArrayAtracciones(arrayAtracciones);
 		super.setTipo(tipo);
 	}
-	
-	
-	
+		
 
 	public int nuevaPromocionPorcentual(String nombreDePromocion, Atraccion[] arrayAtracciones, int descuento, TipoDeAtraccion tipo){
         int sumaDeCostosAtracciones = arrayAtracciones[0].getCostoDeVisita() + arrayAtracciones[1].getCostoDeVisita();

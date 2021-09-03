@@ -3,7 +3,7 @@ package turismoEnLaTierraMedia;
 public abstract class Promocion {
 	
 	private Atraccion [] atraccionesIncluidas;
-	private Atraccion atraccion;
+	
 	private String nombre;
 	private TipoDeAtraccion tipo;
 	

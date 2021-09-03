@@ -134,8 +134,15 @@ public class App {
 		 usuario.tiempoDisponible -= tiempoAtraccionAceptada;
 	}
 	
-	/** 
-	 * 
+	
+	/**  Tenemos una lista de atracciones y una de promociones.
+		El printWriter va a leer la lista de las promociones, las cuales van a ir a un ciclo for, en cada ciclo, vamos a comprobar 
+		que el usuario tenga oro y tiempo para acceder a la atracción, si los tiene, le va a consultar en cada ciclo al usuario si acepta la atracción,
+	 *   si no acepta, pasamos al siguiente elemento y volvemos a hacer la comprobación y la consulta. Si acepta, vamos a restar 1 cupo en la atracción,
+	 *    vamos a guardar en una variable el dato del costo y el tiempo necesario para hacer esa atracción, y se los restamos al usuario que la aceptó, 
+	 *   guardamos la atracción aceptada en un array que vamos a mostrar en el retorno.
+	 *   
+	 *   
 	 * @param usuario
 	 * @return
 	 * @throws IOException
@@ -216,7 +223,7 @@ public class App {
 	    }
 	 
 	
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws InvalidNumberException {
 		 
 	     Atraccion [] arrayAtracciones = new Atraccion[3];
 	     Usuario Axel = new Usuario("Axel", TipoDeAtraccion.AVENTURA, 40, 8);
@@ -237,11 +244,7 @@ public class App {
 
 
 
-	/* 	private boolean aceptar;
-	 
-	 private boolean aceptarOferta() {
-		return this.aceptar;
-	} 
+	/* 	
 	 
 	public String sugerirVisitas(String visitas) {
 		return visitas;
