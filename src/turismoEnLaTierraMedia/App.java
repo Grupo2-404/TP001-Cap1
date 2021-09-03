@@ -21,6 +21,10 @@ public class App {
 	private Atraccion atraccion;
 	private int costoAtraccionAceptada;
 	private double tiempoAtraccionAceptada;
+	private Promocion[] promocionesSugeridas;
+	private int usuarioAgregado = 0;
+	private int atraccionAgregada = 0;
+	private int promocionAgregada = 0;
 
 	
 	public App(int cantidadDeusuarios, int cantidadDeAtracciones, int cantidadDePromociones) {
@@ -30,9 +34,84 @@ public class App {
 	}
 	
 	
+	public int getCapacidadUsuarios() {
+		return usuarios.length;	 
+	}
+	
+	
+	public int getCapacidadAtracciones() {
+		return atracciones.length;
+	}
+	
+	
+	public int getCapacidadPromociones() {
+		return promocionesVigentes.length;
+	}
+	
+
+	public void agregarUsuario(Usuario usuario) {
+		this.usuarios[usuarioAgregado] = usuario;
+		usuarioAgregado();
+	}
+	
+
+	public Usuario[] getUsuarios() {
+		return this.usuarios;
+	}
+	
+
+	
+	private void usuarioAgregado() {
+		usuarioAgregado++;
+	}
+	
+	
+	public void agregarAtraccion(Atraccion atraccion) {
+		this.atracciones[atraccionAgregada] = atraccion;
+		atraccionAgregada();
+	}
+	
+	
+	private void atraccionAgregada() {
+		this.atraccionAgregada++;
+	}
+	
+	
+	public Atraccion[] getAtracciones() {
+		return this.atracciones;
+	}
+	
+	/** Recibimos los parámetros para crear una promo y agregarla al listado de promocionesVigentes.
+	 * 
+	 * @param nombre
+	 * @param listaDeAtracciones
+	 * @param descuento
+	 * @param tipo
+	 */
+	public void agregarPromocionPorcentual(String nombre, Atraccion[]listaDeAtracciones, int descuento, TipoDeAtraccion tipo) {
+		
+		Promocion promoPorcentual = new PromocionPorcentual(nombre, listaDeAtracciones, descuento, tipo);
+		
+		this.promocionesVigentes[promocionAgregada] = promoPorcentual;
+		promocionAgregada();		
+	}
+
+	
+	private void promocionAgregada() {
+		this.promocionAgregada++;
+	}	
+		
+
+	public Promocion[] getPromociones() {
+		return this.promocionesVigentes;
+	}
+	
+	/** Restamos el oro del usuario cuando acepta la oferta sugerida, si la resta diera como resultado un número negativo, no debe realizarse. 
+	 * 
+	 */
 	private void restarOroAlAceptarOferta() {
 		try {
-		if ((usuario.presupuesto - costoAtraccionAceptada) > 0){
+		if ((usuario.presupuesto - costoAtraccionAceptada) < 0){
 			throw new InvalidNumberException("El presupuesto no puede ser menor que 0");
 			}
 		} catch (InvalidNumberException ine) {
@@ -41,10 +120,12 @@ public class App {
 		usuario.presupuesto -= costoAtraccionAceptada;	
 	}
 	
-	
+	/** Restamos el tiempo del usuario cuando acepta la oferta sugerida, si la resta diera como resultado un número negativo, no debe realizarse. 
+	 * 
+	 */
 	private void restarTiempoAlAceptarOferta() {
 		try {
-		if ((usuario.tiempoDisponible - tiempoAtraccionAceptada) > 0){
+		if ((usuario.tiempoDisponible - tiempoAtraccionAceptada) < 0){
 			 throw new InvalidNumberException("El tiempo no puede ser menor que 0");
 			}
 		} catch (InvalidNumberException ine) {
@@ -53,18 +134,46 @@ public class App {
 		 usuario.tiempoDisponible -= tiempoAtraccionAceptada;
 	}
 	
-	
-	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException { 
+	/** 
+	 * 
+	 * @param usuario
+	 * @return
+	 * @throws IOException
+	 */
+	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException{ 	// NullPointerException, RunTimeException
 		
 		Atraccion[] atraccionesSugeridas = new Atraccion[atracciones.length];
 		Atraccion[] atraccionesAceptadas = new Atraccion[atracciones.length];
 		//array promos, y otro array con promos aceptadas.
+		Promocion[] promocionesSugeridas = new Promocion[atracciones.length];
+		/*promocionesSugeridas[0] = new Promocion(Atraccion[]);
+		promocionesSugeridas[1] = new Promocion();
+		*/
+		
 		int cantidadAceptada = 0;
 		
 		PrintWriter sugerenciaDiaria = new PrintWriter(new FileWriter("SugerenciaDiaria.txt"));
 		
+		
+		/*for (int j = 0; j < promocionesSugeridas.length; j++) {
+		
+			 if(promocionesSugeridas[i].atraccionesIncluidas[0].tiempoNecesario <= usuario.tiempoDisponible && promocionesSugeridas[i].costoDeVisita <= usuario.presupuesto) { 
+					if (usuario.aceptaOferta() == true) {		
+						// Promocion.     atraccion.cupoDePersonas --;
+						this.tiempoAtraccionAceptada = promocionesSugeridas[i].tiempoNecesario;
+						this.restarTiempoAlAceptarOferta();
+						this.costoAtraccionAceptada = promocionesSugeridas[i].costoDeVisita;
+						this.restarOroAlAceptarOferta();
+						atraccionesAceptadas[cantidadAceptada] = promocionesSugeridas[i];
+						cantidadAceptada++;
+						sugerenciaDiaria.println(promocionesSugeridas[i]);
+						sugerenciaDiaria.close();
+					}
+				}	//???????????.atraccionesIncluidas[0].getCostoDeVisita();
+		 }
+		*/
 		for (int i = 0; i < atraccionesSugeridas.length; i++) {
-			//sugerir array de promos
+		
 			
 			if(atraccionesSugeridas[i].tiempoNecesario <= usuario.tiempoDisponible && atraccionesSugeridas[i].costoDeVisita <= usuario.presupuesto) { 
 				if (usuario.aceptaOferta() == true) {		
@@ -78,24 +187,24 @@ public class App {
 					sugerenciaDiaria.println(atraccionesSugeridas[i]);
 					sugerenciaDiaria.close();
 				}
-			}			 
+			}
 		}
 		return atraccionesAceptadas;
-	} 
+	}
 	
-	/*
+	
 	private boolean verificandoQueNoSeRepitaLaAtraccionEnPromocionesAceptadas(Atraccion unaAtraccion) {
-        for(Promocion unaPromocion : promocionesAceptadas) {
-           Atraccion [] atraccionesPromocionAceptada = unaPromocion.obtenerAtraccionesIncluidas();
-            for(Atraccion atraccionPromo : atraccionesPromocionAceptada) {
-                if (atraccionPromo.equals(unaAtraccion)) {
+        for(Promocion unaPromocion : promocionesSugeridas) {
+          // Atraccion [] atraccionesPromocionAceptada = unaPromocion.obtenerAtraccionesIncluidas();
+          //  for(Atraccion atraccionPromo : atraccionesPromocionAceptada) {
+          //     if (atraccionPromo.equals(unaAtraccion)) {
                     return true;
                 }
-            }
-        }
+         //   }
+       // }
         return false;
     }
-	*/
+	
 	
 	 static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) {		// Quitar este método de App después de testear.
 	        Arrays.sort(arrayAtracciones);
@@ -120,7 +229,13 @@ public class App {
 	    // ofertarMientrasQueHayaOroYtiempo(Axel);
 
 	    }
-	
+
+
+
+
+
+
+
 
 	/* 	private boolean aceptar;
 	 

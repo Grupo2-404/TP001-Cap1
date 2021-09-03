@@ -19,6 +19,7 @@ public class Usuario {
 	}
 	 
 	
+	
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -39,7 +40,7 @@ public class Usuario {
 	}
 	
 	
-	public void setPresupuesto(int presupuesto) {
+	public void setPresupuesto(int presupuesto) {		// Tratar la excepción adecuadamente.
 		try {
 			if(presupuesto < 1) {
 			throw new InvalidNumberException("El presupuesto no puede ser menor que 1");
@@ -51,9 +52,9 @@ public class Usuario {
 	}
 	
 	
-	public void setTiempoDisponible(double tiempoDisponible){
+	public void setTiempoDisponible(double tiempoDisponible){		// Tratar la excepción adecuadamente.
 		try {
-		if(tiempoDisponible < 1) {
+			if(tiempoDisponible < 1.00) {
 			throw new InvalidNumberException("El tiempo no puede ser menor que 1");
 		}
 		} catch (InvalidNumberException ine) {
@@ -78,7 +79,7 @@ public class Usuario {
     }
 	
 	
-	 public static void main(String[] args) {
+	 public static void main(String[] args) throws InvalidNumberException {
 	        Usuario gime = new Usuario("Gimena",TipoDeAtraccion.AVENTURA, 20, 5);
 	        boolean acepta = gime.aceptaOferta();
 	        if (acepta == true) {

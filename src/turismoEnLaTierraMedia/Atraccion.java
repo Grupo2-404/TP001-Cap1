@@ -20,13 +20,18 @@ public class Atraccion implements Comparable<Atraccion> {
 	}
 	
 	
+	public String getNombre() {
+		return this.nombre;
+	}
+
+	
 	public int getCostoDeVisita() {
 		return costoDeVisita;
 	}
 
 	
 	@Override
-	public int compareTo (Atraccion otra){
+	public int compareTo (Atraccion otra){		// Implementar este método en promociones. (O mejor aún, en la interfaz)
 		   if (costoDeVisita == otra.costoDeVisita) {
 		 return (int) (this.tiempoNecesario - otra.tiempoNecesario) * -1;  // revisar como es la conversión a int por riesgo de que redondee a 0.
 		}	
@@ -44,7 +49,6 @@ public class Atraccion implements Comparable<Atraccion> {
 	    }
 	
 	
-	 
 	   public static void main(String[] args) {
 	     Atraccion [] arrayAtracciones = new Atraccion[3];
 	     arrayAtracciones[0] = new Atraccion("Atracción 1", 30, 2, 40, TipoDeAtraccion.AVENTURA);
@@ -53,6 +57,8 @@ public class Atraccion implements Comparable<Atraccion> {
 
 	     ordenarPorMayorCostoYtiempo(arrayAtracciones);
 	    }
+
+
 
 	   
 	   

@@ -1,5 +1,5 @@
 package turismoEnLaTierraMedia;
 
-public class PromocionAxB {
+public class PromocionAxB extends Promocion {
 
 }
