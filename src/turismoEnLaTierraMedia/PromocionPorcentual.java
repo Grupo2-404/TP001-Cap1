@@ -5,7 +5,6 @@ public class PromocionPorcentual extends Promocion {
 	private int porcentajeDescuento;
 	
 	
-	
 	public PromocionPorcentual(String nombre, Atraccion[] arrayAtracciones, int porcentaje, TipoDeAtraccion tipo) {
 		super.setNombre(nombre);
 		this.porcentajeDescuento = porcentaje;

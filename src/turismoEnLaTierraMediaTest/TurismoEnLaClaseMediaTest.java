@@ -2,6 +2,7 @@ package turismoEnLaTierraMediaTest;
 
 import static org.junit.Assert.*;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +12,8 @@ import turismoEnLaTierraMedia.Atraccion;
 import turismoEnLaTierraMedia.InvalidNumberException;
 import turismoEnLaTierraMedia.Promocion;
 import turismoEnLaTierraMedia.TipoDeAtraccion;
-import turismoEnLaTierraMedia.PorTiempoComparator;
+
+
 
 public class TurismoEnLaClaseMediaTest {
 
@@ -24,8 +26,7 @@ public class TurismoEnLaClaseMediaTest {
 		Usuario Camila = new Usuario("Camila", TipoDeAtraccion.PAISAJE, 22000, 8.00);
 		Usuario Claudia = new Usuario("Claudia", TipoDeAtraccion.AVENTURA, 12000, 6.00);
 		Usuario Gimena = new Usuario("Gimena", TipoDeAtraccion.PAISAJE, 15000, 2.00);
-		Usuario AxelError = new Usuario("Axel", TipoDeAtraccion.PAISAJE, 0, 12.00);
-		Usuario BrunoError = new Usuario("Bruno", TipoDeAtraccion.DEGUSTACION, -3, 3);
+
         
         tierraMedia.agregarUsuario(Axel);
         tierraMedia.agregarUsuario(Bruno);
@@ -34,8 +35,6 @@ public class TurismoEnLaClaseMediaTest {
         tierraMedia.agregarUsuario(Gimena);
         tierraMedia.agregarUsuario(Claudia);
         tierraMedia.agregarUsuario(Gimena);
-        tierraMedia.agregarUsuario(AxelError);
-        tierraMedia.agregarUsuario(BrunoError);
     }
 
 	
@@ -47,18 +46,13 @@ public class TurismoEnLaClaseMediaTest {
 		Usuario Camila = new Usuario("Camila", TipoDeAtraccion.PAISAJE, 22000, 8.00);
 		Usuario Claudia = new Usuario("Claudia", TipoDeAtraccion.AVENTURA, 12000, 6.00);
 		Usuario Gimena = new Usuario("Gimena", TipoDeAtraccion.PAISAJE, 15000, 2.00);
-		Usuario AxelError = new Usuario("Axel", TipoDeAtraccion.PAISAJE, 0, 12.00);
-		Usuario BrunoError = new Usuario("Bruno", TipoDeAtraccion.DEGUSTACION, -3, 3);
-		
+	
 		assertEquals(10000, Axel.getPresupuesto(),0.001);
 		assertEquals(Bruno.getAtraccionPreferida(),TipoDeAtraccion.DEGUSTACION);
 		assertEquals(Camila.getTiempoDisponible(),8.00,0.001);
 		assertEquals(Claudia.getNombre(), "Claudia");
 		assertEquals(15000, Gimena.getPresupuesto(),0.001);
-		assertEquals(-3,BrunoError.getPresupuesto(),0.001);				// Corregir y evitar que suceda.
-		assertEquals(0,AxelError.getPresupuesto(),0.001);				// Corregir y evitar que suceda.
 	}
-	
 
 
     @Test
@@ -70,9 +64,9 @@ public class TurismoEnLaClaseMediaTest {
         assertEquals(50, sistema.getCapacidadUsuarios());
         assertEquals(20, sistema.getCapacidadAtracciones());
         assertEquals(10, sistema.getCapacidadPromociones());
-
     }
 
+    
     @Test
    	public void agregarNuevosUsuariosAlSistema() throws InvalidNumberException {
 
@@ -119,7 +113,53 @@ public class TurismoEnLaClaseMediaTest {
     }
 	
     
+    @Test (expected = Exception.class)
+     public void ExcepcionAlCrearUsuarioConValoresNegativos() throws InvalidNumberException {
+  
+    	Usuario AxelError = new Usuario("Axel", TipoDeAtraccion.PAISAJE, 0, 12.00);
+		Usuario BrunoError = new Usuario("Bruno", TipoDeAtraccion.DEGUSTACION, -3, 3);
+    }
     
+    @Test
+     public void QueAtraccionOrdenePorTipoDeAtraccionDespuesPorCostoYdespuesPorTiempo() throws InvalidNumberException {
+    	
+    	App sistema = new App(50,20,10);
+    	
+    	Usuario Camila = new Usuario("Camila", TipoDeAtraccion.PAISAJE, 22000, 8.00);
+    	
+    	Atraccion[]atraccionPreferida;
+    	// Atraccion[]atraccionNoPreferida;
+    	
+    	Atraccion Moria = new Atraccion("Moria",10,2,6,TipoDeAtraccion.AVENTURA);
+    	Atraccion Mordor = new Atraccion("Mordor",25,3,4,TipoDeAtraccion.PAISAJE);
+    	Atraccion Erebor = new Atraccion("Erebor",12,3,32,TipoDeAtraccion.PAISAJE);
+    	Atraccion LaComarca = new Atraccion("LaComarca",3,6.5,150,TipoDeAtraccion.DEGUSTACION);
+
+    
+    	Atraccion[]arrayEsperado = new Atraccion[2];
+    	
+    	//arrayEsperado[0] = LaComarca;
+    	//arrayEsperado[2] = Erebor;
+    	arrayEsperado[0] = Mordor;
+    	arrayEsperado[1] = Erebor;
+    
+  
+       sistema.agregarAtraccion(Erebor);
+       sistema.agregarAtraccion(Mordor);
+       sistema.agregarAtraccion(LaComarca);
+       sistema.agregarAtraccion(Moria);
+    	
+        atraccionPreferida = sistema.atraccionesPreferidas(Camila);
+       // atraccionNoPreferida = sistema.atraccionesNoPreferidas(Camila); 
+        
+        
+        Atraccion.ordenarPorMayorCostoYtiempo(atraccionPreferida);
+      //  Atraccion.ordenarPorMayorCostoYtiempo(atraccionNoPreferida);
+        
+	
+        Assert.assertArrayEquals(arrayEsperado,atraccionPreferida);
+      //  Assert.assertArrayEquals(arrayEsperado2,atraccionNoPreferida);
+    }
     
     
     

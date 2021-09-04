@@ -41,13 +41,10 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 	}
 
-	public void setTiempoDisponible(double tiempoDisponible) { // Tratar la excepción adecuadamente.
-		try {
+	public void setTiempoDisponible(double tiempoDisponible) throws InvalidNumberException { // Tratar la excepción adecuadamente.
+	
 			if (tiempoDisponible < 1.00) {
 				throw new InvalidNumberException("El tiempo no puede ser menor que 1");
-			}
-		} catch (InvalidNumberException ine) {
-			System.err.println("El tiempo no puede ser menor que 1");
 		}
 		this.tiempoDisponible = tiempoDisponible;
 	}
