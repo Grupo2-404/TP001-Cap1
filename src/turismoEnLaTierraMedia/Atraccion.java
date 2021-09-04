@@ -40,12 +40,12 @@ public class Atraccion implements Comparable<Atraccion> {
 	}
 	
 	
-	
+	/*
 	public int getTipoDeAtraccionValor() {
 		TipoDeAtraccion tipo = TipoDeAtraccion.ELECCIONDEUSUARIO;
 		return tipo.getValor();
 	}
-	
+	*/
 	
 	public static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) {
 		Arrays.sort(arrayAtracciones);		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
