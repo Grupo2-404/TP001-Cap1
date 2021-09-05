@@ -1,19 +1,28 @@
 package turismoEnLaTierraMedia;
 
 public class PromocionAbsoluta extends Promocion {
-	
 
-	public int crearPromocionAbsoluta(String nombreDePromocion, Atraccion[] arrayAtracciones, int monedas, TipoDeAtraccion tipo) {	
-	
-        int sumaDeCostosDeAtracciones = arrayAtracciones[0].getCostoDeVisita() + arrayAtracciones[1].getCostoDeVisita();
-        int precioFinalPromocionAbsoluta = sumaDeCostosDeAtracciones - monedas;
-        return precioFinalPromocionAbsoluta;
-    }
-	
+	private final int MONEDAS;
+
+	public PromocionAbsoluta(String nombre, Atraccion[] arrayAtracciones, int monedas) {
+		super(nombre, arrayAtracciones);
+		this.MONEDAS = monedas;
+	}
 
 	@Override
-	public String getNombre() {		// Consultar si es necesario crear el método o lo heredamos directamente.
+	public int getCostoDeVisita() {
+
+		int costoTotal = 0;
+
+		for (int i = 0; i < super.atraccionesIncluidas.length; i++) {
+			costoTotal += atraccionesIncluidas[i].getCostoDeVisita();
+		}
+		return costoTotal - MONEDAS;
+	}
+
+	@Override
+	public String getNombre() { // Consultar si es necesario crear el método o lo heredamos directamente.
 		return super.getNombre();
 	}
-	
+
 }

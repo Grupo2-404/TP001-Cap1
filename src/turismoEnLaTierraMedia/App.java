@@ -26,92 +26,73 @@ public class App {
 	private int promocionAgregada = 0;
 	private TipoDeAtraccion tipo;
 
-	
 	public App(int cantidadDeusuarios, int cantidadDeAtracciones, int cantidadDePromociones) {
 		usuarios = new Usuario[cantidadDeusuarios];
 		atracciones = new Atraccion[cantidadDeAtracciones];
 		promocionesVigentes = new Promocion[cantidadDePromociones];
 	}
 
-	
 	public int getCapacidadUsuarios() {
 		return usuarios.length;
 	}
 
-	
 	public int getCapacidadAtracciones() {
 		return atracciones.length;
 	}
 
-	
 	public int getCapacidadPromociones() {
 		return promocionesVigentes.length;
 	}
 
-	
 	public void agregarUsuario(Usuario usuario) {
 		this.usuarios[usuarioAgregado] = usuario;
 		usuarioAgregado();
 	}
 
-	
 	public Usuario[] getUsuarios() {
 		return this.usuarios;
 	}
 
-	
 	private void usuarioAgregado() {
 		usuarioAgregado++;
 	}
 
-	
 	public void agregarAtraccion(Atraccion atraccion) {
 		this.atracciones[atraccionAgregada] = atraccion;
 		atraccionAgregada();
 	}
 
-	
 	private void atraccionAgregada() {
 		this.atraccionAgregada++;
 	}
 
-	
 	public Atraccion[] getAtracciones() {
 		return this.atracciones;
 	}
 
-	
-	public Atraccion[] atraccionesPreferidas(Usuario usuario) {
+	/*
+	 * public Atraccion[] atraccionesPreferidas(Usuario usuario) {
+	 * 
+	 * int contadorPreferidas = 0;
+	 * 
+	 * Atraccion[] atraccionesPreferidas = new Atraccion[atracciones.length];
+	 * 
+	 * for (int i = 0; i < atracciones.length; i++) { if (tipo ==
+	 * usuario.getAtraccionPreferida()) { atraccionesPreferidas[contadorPreferidas]
+	 * = atracciones[i]; contadorPreferidas++; } } return atraccionesPreferidas; }
+	 * 
+	 * 
+	 * public Atraccion[] atraccionesNoPreferidas(Usuario usuario) {
+	 * 
+	 * int contadorNoPreferidas = 0; Atraccion[] atraccionesNoPreferidas = new
+	 * Atraccion[atracciones.length];
+	 * 
+	 * for (int i = 0; i < atracciones.length; i++) { if (tipo !=
+	 * usuario.getAtraccionPreferida()) {
+	 * atraccionesNoPreferidas[contadorNoPreferidas] = atracciones[i];
+	 * contadorNoPreferidas++; } } return atraccionesNoPreferidas; }
+	 */
 
-		int contadorPreferidas = 0;
-
-		Atraccion[] atraccionesPreferidas = new Atraccion[atracciones.length];
-
-		for (int i = 0; i < atracciones.length; i++) {
-			if (tipo == usuario.getAtraccionPreferida()) {
-				atraccionesPreferidas[contadorPreferidas] = atracciones[i];
-				contadorPreferidas++;
-			}
-		}
-		return atraccionesPreferidas;
-	}
-
-	
-	public Atraccion[] atraccionesNoPreferidas(Usuario usuario) {
-
-		int contadorNoPreferidas = 0;
-		Atraccion[] atraccionesNoPreferidas = new Atraccion[atracciones.length];
-
-		for (int i = 0; i < atracciones.length; i++) {
-			if (tipo != usuario.getAtraccionPreferida()) {
-				atraccionesNoPreferidas[contadorNoPreferidas] = atracciones[i];
-				contadorNoPreferidas++;
-			}
-		}
-		return atraccionesNoPreferidas;
-	}
-
-	
 	/**
 	 * Recibimos los parámetros para crear una promo y agregarla al listado de
 	 * promocionesVigentes.
@@ -121,26 +102,122 @@ public class App {
 	 * @param descuento
 	 * @param tipo
 	 */
-	public void agregarPromocionPorcentual(String nombre, Atraccion[] listaDeAtracciones, int descuento,
-			TipoDeAtraccion tipo) {
-
-		Promocion promoPorcentual = new PromocionPorcentual(nombre, listaDeAtracciones, descuento, tipo);
-
-		this.promocionesVigentes[promocionAgregada] = promoPorcentual;
+	public void agregarPromocion(Promocion promocion) {
+		this.promocionesVigentes[promocionAgregada] = promocion;
 		promocionAgregada();
 	}
-	
-	
+
 	private void promocionAgregada() {
 		this.promocionAgregada++;
 	}
-	
-	
+
 	public Promocion[] getPromociones() {
 		return this.promocionesVigentes;
 	}
+
+	/*
+	 * Devuelve un array con atracciones que son del tipo de la atraccion preferida
+	 * del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
+	 * pasada determina la cantidad de atracciones que coinciden con la preferencia
+	 * del usuario. En la segunda pasada carga el array de atracciones preferidas
+	 */
+	public Atraccion[] atraccionesPreferidas(Usuario usuario) {
+
+		int contadorPreferidas = 0;
+		for (int i = 0; i < atracciones.length; i++) {
+			if (atracciones[i].getTipo() == usuario.getAtraccionPreferida()) {
+				contadorPreferidas++;
+			}
+		}
+
+		Atraccion[] atraccionesPreferidas = new Atraccion[contadorPreferidas];
+
+		contadorPreferidas = 0;
+
+		for (int i = 0; i < atracciones.length; i++) {
+			if (atracciones[i].getTipo() == usuario.getAtraccionPreferida()) {
+				atraccionesPreferidas[contadorPreferidas] = atracciones[i];
+				contadorPreferidas++;
+			}
+		}
+		return atraccionesPreferidas;
+	}
+
+	/*
+	 * devuelve array con atracciones que no son del tipo de la atraccion preferida
+	 * del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
+	 * pasada determina la cantidad de atracciones que no coinciden con la
+	 * preferencia del usuario. En la segunda pasada carga el array de atracciones
+	 * no preferidas
+	 */
+	public Atraccion[] atraccionesNoPreferidas(Usuario usuario) {
+
+		int contadorNoPreferidas = 0;
+
+		for (int i = 0; i < atracciones.length; i++) {
+			if (atracciones[i].getTipo() != usuario.getAtraccionPreferida()) {
+				contadorNoPreferidas++;
+			}
+		}
+
+		Atraccion[] atraccionesNoPreferidas = new Atraccion[contadorNoPreferidas];
+
+		contadorNoPreferidas = 0;
+		for (int i = 0; i < atracciones.length; i++) {
+			if (atracciones[i].getTipo() != usuario.getAtraccionPreferida()) {
+				atraccionesNoPreferidas[contadorNoPreferidas] = atracciones[i];
+				contadorNoPreferidas++;
+			}
+		}
+		return atraccionesNoPreferidas;
+	}
+
 	
+	public Promocion[] promocionesPreferidas(Usuario usuario) {
+
+		int contadorPreferidas = 0;
+		for (int i = 0; i < promocionesVigentes.length; i++) {
+			if (promocionesVigentes[i].getTipo() == usuario.getAtraccionPreferida()) {
+				contadorPreferidas++;
+			}
+		}
+
+		Promocion[] promocionesPreferidas = new Promocion[contadorPreferidas];
+
+		contadorPreferidas = 0;
+
+		for (int i = 0; i < promocionesVigentes.length; i++) {
+			if (promocionesVigentes[i].getTipo() == usuario.getAtraccionPreferida()) {
+				promocionesPreferidas[contadorPreferidas] = promocionesVigentes[i];
+				contadorPreferidas++;
+			}
+		}
+		return promocionesPreferidas;
+	}
 	
+	public Promocion[] promocionesNoPreferidas(Usuario usuario) {
+
+		int contadorNoPreferidas = 0;
+
+		for (int i = 0; i < promocionesVigentes.length; i++) {
+			if (promocionesVigentes[i].getTipo() != usuario.getAtraccionPreferida()) {
+				contadorNoPreferidas++;
+			}
+		}
+
+		Promocion[] promocionesNoPreferidas = new Promocion[contadorNoPreferidas];
+
+		contadorNoPreferidas = 0;
+		for (int i = 0; i < promocionesVigentes.length; i++) {
+			if (promocionesVigentes[i].getTipo() != usuario.getAtraccionPreferida()) {
+				promocionesNoPreferidas[contadorNoPreferidas] = promocionesVigentes[i];
+				contadorNoPreferidas++;
+			}
+		}
+		return promocionesNoPreferidas;
+	}
+	
+
 	/**
 	 * Restamos el oro del usuario cuando acepta la oferta sugerida, si la resta
 	 * diera como resultado un número negativo, no debe realizarse.
@@ -155,8 +232,7 @@ public class App {
 		}
 		usuario.presupuesto -= costoAtraccionAceptada;
 	}
-	
-	
+
 	/**
 	 * Restamos el tiempo del usuario cuando acepta la oferta sugerida, si la resta
 	 * diera como resultado un número negativo, no debe realizarse.
@@ -171,8 +247,7 @@ public class App {
 		}
 		usuario.tiempoDisponible -= tiempoAtraccionAceptada;
 	}
-	
-	
+
 	/**
 	 * Tenemos una lista de atracciones y una de promociones. El printWriter va a
 	 * leer la lista de las promociones, las cuales van a ir a un ciclo for, en cada
@@ -184,7 +259,6 @@ public class App {
 	 * necesario para hacer esa atracción, y se los restamos al usuario que la
 	 * aceptó, guardamos la atracción aceptada en un array que vamos a mostrar en el
 	 * retorno.
-	 * 
 	 * 
 	 * @param usuario
 	 * @return
@@ -209,9 +283,9 @@ public class App {
 		/*
 		 * for (int j = 0; j < promocionesSugeridas.length; j++) {
 		 * 
-		 * if(promocionesSugeridas[i].atraccionesIncluidas[0].tiempoNecesario <=
-		 * usuario.tiempoDisponible && promocionesSugeridas[i].costoDeVisita <=
-		 * usuario.presupuesto) { if (usuario.aceptaOferta() == true) { // Promocion.
+		 * if(promocionesSugeridas[i].atraccionesIncluidas[0].tiempoNecesario
+		 * <=usuario.tiempoDisponible && promocionesSugeridas[i].costoDeVisita <=
+		 * usuario.presupuesto) { if (usuario.aceptaOferta() == true) { // Promocion. }
 		 * atraccion.cupoDePersonas --; this.tiempoAtraccionAceptada =
 		 * promocionesSugeridas[i].tiempoNecesario; this.restarTiempoAlAceptarOferta();
 		 * this.costoAtraccionAceptada = promocionesSugeridas[i].costoDeVisita;
@@ -239,8 +313,7 @@ public class App {
 		}
 		return atraccionesAceptadas;
 	}
-	
-	
+
 	private boolean verificandoQueNoSeRepitaLaAtraccionEnPromocionesAceptadas(Atraccion unaAtraccion) {
 		for (Promocion unaPromocion : promocionesSugeridas) {
 			// Atraccion [] atraccionesPromocionAceptada =
@@ -253,8 +326,7 @@ public class App {
 		// }
 		return false;
 	}
-	
-	
+
 	static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) { // Quitar este método de App después de
 																			// testear.
 		Arrays.sort(arrayAtracciones);
@@ -264,8 +336,7 @@ public class App {
 			System.out.println("-------------------");
 		}
 	}
-	
-	
+
 	public static void main(String[] args) throws InvalidNumberException {
 
 		Atraccion[] arrayAtracciones = new Atraccion[3];
@@ -279,7 +350,6 @@ public class App {
 		// ofertarMientrasQueHayaOroYtiempo(Axel);
 	}
 
-	
 	/*
 	 * 
 	 * public String sugerirVisitas(String visitas) { return visitas; }

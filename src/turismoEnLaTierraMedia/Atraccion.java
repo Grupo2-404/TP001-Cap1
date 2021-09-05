@@ -12,7 +12,6 @@ public class Atraccion implements Comparable<Atraccion> {
 	private TipoDeAtraccion tipo;
 	private Usuario usuario;
 	
-	
 
 	public Atraccion(String nombre, int costo, double tiempo, int cupo, TipoDeAtraccion tipo) {
 		this.nombre = nombre;
@@ -22,14 +21,17 @@ public class Atraccion implements Comparable<Atraccion> {
 		this.tipo = tipo;
 	}		
 	
+	
 	public String getNombre() {
 		return this.nombre;
 	}
 
+	
 	public int getCostoDeVisita() {
 		return costoDeVisita;
 	}
-
+	
+	
 	@Override
 	public int compareTo(Atraccion otra) { // Implementar este método en promociones. (O mejor aún, en la interfaz)
 		
@@ -47,6 +49,7 @@ public class Atraccion implements Comparable<Atraccion> {
 	}
 	*/
 	
+	
 	public static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) {
 		Arrays.sort(arrayAtracciones);		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
 		/*
@@ -58,11 +61,13 @@ public class Atraccion implements Comparable<Atraccion> {
 		}*/
 	}
 
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(costoDeVisita, nombre, tiempoNecesario, tipo, usuario);
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -75,6 +80,16 @@ public class Atraccion implements Comparable<Atraccion> {
 		return costoDeVisita == other.costoDeVisita && Objects.equals(nombre, other.nombre)
 				&& Double.doubleToLongBits(tiempoNecesario) == Double.doubleToLongBits(other.tiempoNecesario)
 				&& tipo == other.tipo && Objects.equals(usuario, other.usuario);
+	}
+
+
+	public TipoDeAtraccion getTipo() {
+		return tipo;
+	}
+
+
+	public double getTiempoNecesario() {
+		return this.tiempoNecesario;
 	}
 	
 	
