@@ -7,16 +7,16 @@ public class Usuario {
 	private String nombre;
 	protected int presupuesto;
 	protected double tiempoDisponible;
-	private TipoDeAtraccion tipoAtracciónPreferida;
+	private TipoDeAtraccion tipoAtraccionPreferida;
 	private Sugerible[] itinerario;
 	private Promocion[] promociones;
 	private Atraccion[] atracciones;
 	private int atraccionItinerarioAgregada;
 
-	public Usuario(String nombre, TipoDeAtraccion atracciónPreferida, int presupuesto, double tiempoDisponible)
+	public Usuario(String nombre, TipoDeAtraccion atraccionPreferida, int presupuesto, double tiempoDisponible)
 			throws InvalidNumberException {
 		this.nombre = nombre;
-		this.tipoAtracciónPreferida = atracciónPreferida;
+		this.tipoAtraccionPreferida = atraccionPreferida;
 		this.setPresupuesto(presupuesto);
 		this.setTiempoDisponible(tiempoDisponible);
 	}
@@ -26,7 +26,7 @@ public class Usuario {
 	}
 
 	public TipoDeAtraccion getAtraccionPreferida() {
-		return this.tipoAtracciónPreferida;
+		return this.tipoAtraccionPreferida;
 	}
 
 	public int getPresupuesto() {
@@ -37,7 +37,7 @@ public class Usuario {
 		return this.tiempoDisponible;
 	}
 
-	public void setPresupuesto(int presupuesto) throws InvalidNumberException { // Tratar la excepción adecuadamente.
+	public void setPresupuesto(int presupuesto) throws InvalidNumberException { // Tratar la excepciï¿½n adecuadamente.
 
 		if (presupuesto < 1) {
 			throw new InvalidNumberException("El presupuesto no puede ser menor que 1");
@@ -45,7 +45,7 @@ public class Usuario {
 		this.presupuesto = presupuesto;
 	}
 
-	public void setTiempoDisponible(double tiempoDisponible) throws InvalidNumberException { // Tratar la excepción
+	public void setTiempoDisponible(double tiempoDisponible) throws InvalidNumberException { // Tratar la excepciï¿½n
 																								// adecuadamente.
 
 		if (tiempoDisponible < 1.00) {
@@ -66,7 +66,7 @@ public class Usuario {
 		return aceptaOrechaza;
 	}
 
-	private void añadirAtracciónAlIntinerario() {
+	private void aniadirAtraccionAlIntinerario() {
 		this.atraccionItinerarioAgregada++;
 	}
 
@@ -75,11 +75,11 @@ public class Usuario {
 		this.tiempoDisponible -= promo.getTiempoNecesario();
 		this.presupuesto -= promo.getCostoDeVisita();
 		// this.itinerario[atraccionItinerarioAgregada] = promo;
-		añadirAtracciónAlIntinerario();
+		aniadirAtraccionAlIntinerario();
 	}
 
 	/*
-	 * public boolean aceptaOferta(Promocion promo) { // excepción para que no se
+	 * public boolean aceptaOferta(Promocion promo) { // excepciï¿½n para que no se
 	 * escriba otra cosa?
 	 * 
 	 * this.imprimirPromo(promo);
@@ -125,13 +125,13 @@ public class Usuario {
 		if (acepta == true) {
 			System.out.println("Usted a Aceptado la Oferta");
 		} else if (acepta == false) {
-			System.out.println("Usted No aceptó la oferta");
+			System.out.println("Usted No acepta la oferta");
 		}
 
 		// boolean acepta = gime.aceptaOferta(Promocion1);
 		/*
 		 * if (acepta == true) { System.out.println("Usted a Aceptado la Oferta"); }
-		 * else if (acepta == false) { System.out.println("Usted No aceptó la oferta");
+		 * else if (acepta == false) { System.out.println("Usted No aceptï¿½ la oferta");
 		 * }
 		 */
 	}
@@ -139,20 +139,20 @@ public class Usuario {
 	/*
 	 * public void setNombre(String nombre) { this.nombre = nombre; }
 	 * 
-	 * public void setAtracciónPreferida(String atracciónPreferida) {
-	 * this.atracciónPreferida = atracciónPreferida; }
+	 * public void setAtracciï¿½nPreferida(String atracciï¿½nPreferida) {
+	 * this.atracciï¿½nPreferida = atracciï¿½nPreferida; }
 	 */
 
 	public void imprimirPromo(Promocion promo) {
 
-		System.out.println("Nombre de promoción: " + promo.getNombre());
+		System.out.println("Nombre de promocion: " + promo.getNombre());
 
 		for (int i = 0; i < promo.getArrayAtracciones().length; i++) {
 			System.out.println((i + 1) + ". " + promo.getNombreAtraccion(promo.getArrayAtracciones()[i]));
 
 		}
 		System.out.println("-------------------");
-		System.out.println("costo de la promoción: " + promo.getCostoDeVisita());
+		System.out.println("costo de la promocion: " + promo.getCostoDeVisita());
 		System.out.println("Tiempo necesario: " + promo.getTiempoNecesario());
 		System.out.println("-------------------");
 	}
