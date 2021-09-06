@@ -25,6 +25,8 @@ public class App {
 	private int atraccionAgregada = 0;
 	private int promocionAgregada = 0;
 	private TipoDeAtraccion tipo;
+	private Atraccion[] atraccionesAceptadas;
+	// Promocion[] promocionesAceptadas;
 
 	public App(int cantidadDeusuarios, int cantidadDeAtracciones, int cantidadDePromociones) {
 		usuarios = new Usuario[cantidadDeusuarios];
@@ -69,28 +71,15 @@ public class App {
 	public Atraccion[] getAtracciones() {
 		return this.atracciones;
 	}
-
 	/*
-	 * public Atraccion[] atraccionesPreferidas(Usuario usuario) {
+	 * public void listadoConTamañoReal() {
 	 * 
-	 * int contadorPreferidas = 0;
+	 * int contadorElementos = 0;
 	 * 
-	 * Atraccion[] atraccionesPreferidas = new Atraccion[atracciones.length];
-	 * 
-	 * for (int i = 0; i < atracciones.length; i++) { if (tipo ==
-	 * usuario.getAtraccionPreferida()) { atraccionesPreferidas[contadorPreferidas]
-	 * = atracciones[i]; contadorPreferidas++; } } return atraccionesPreferidas; }
-	 * 
-	 * 
-	 * public Atraccion[] atraccionesNoPreferidas(Usuario usuario) {
-	 * 
-	 * int contadorNoPreferidas = 0; Atraccion[] atraccionesNoPreferidas = new
-	 * Atraccion[atracciones.length];
-	 * 
-	 * for (int i = 0; i < atracciones.length; i++) { if (tipo !=
-	 * usuario.getAtraccionPreferida()) {
-	 * atraccionesNoPreferidas[contadorNoPreferidas] = atracciones[i];
-	 * contadorNoPreferidas++; } } return atraccionesNoPreferidas; }
+	 * for (int i = 0; i < atracciones.length; i++) { if (atracciones[i] != null) {
+	 * contadorElementos++; } Atraccion[]listadoReal = new
+	 * Atraccion[contadorElementos]; } for(int j = 0; j < listadoReal.length; j++) {
+	 * listadoReal[i] = atraccion[i]; } }
 	 */
 
 	/**
@@ -140,6 +129,7 @@ public class App {
 				contadorPreferidas++;
 			}
 		}
+		Atraccion.ordenarPorMayorCostoYtiempo(atraccionesPreferidas);
 		return atraccionesPreferidas;
 	}
 
@@ -169,10 +159,10 @@ public class App {
 				contadorNoPreferidas++;
 			}
 		}
+		Atraccion.ordenarPorMayorCostoYtiempo(atraccionesNoPreferidas);
 		return atraccionesNoPreferidas;
 	}
 
-	
 	public Promocion[] promocionesPreferidas(Usuario usuario) {
 
 		int contadorPreferidas = 0;
@@ -192,9 +182,10 @@ public class App {
 				contadorPreferidas++;
 			}
 		}
+		Promocion.ordenarPorMayorCostoYtiempo(promocionesPreferidas);
 		return promocionesPreferidas;
 	}
-	
+
 	public Promocion[] promocionesNoPreferidas(Usuario usuario) {
 
 		int contadorNoPreferidas = 0;
@@ -214,9 +205,9 @@ public class App {
 				contadorNoPreferidas++;
 			}
 		}
+		Promocion.ordenarPorMayorCostoYtiempo(promocionesNoPreferidas);
 		return promocionesNoPreferidas;
 	}
-	
 
 	/**
 	 * Restamos el oro del usuario cuando acepta la oferta sugerida, si la resta
@@ -224,7 +215,7 @@ public class App {
 	 * 
 	 * @throws InvalidNumberException
 	 * 
-	 */
+	 
 	private void restarOroAlAceptarOferta() throws InvalidNumberException {
 
 		if ((usuario.presupuesto - costoAtraccionAceptada) < 0) {
@@ -232,14 +223,15 @@ public class App {
 		}
 		usuario.presupuesto -= costoAtraccionAceptada;
 	}
-
+*/
+	
 	/**
 	 * Restamos el tiempo del usuario cuando acepta la oferta sugerida, si la resta
 	 * diera como resultado un número negativo, no debe realizarse.
 	 * 
 	 * @throws InvalidNumberException
 	 * 
-	 */
+	 
 	private void restarTiempoAlAceptarOferta() throws InvalidNumberException {
 
 		if ((usuario.tiempoDisponible - tiempoAtraccionAceptada) < 0) {
@@ -247,6 +239,23 @@ public class App {
 		}
 		usuario.tiempoDisponible -= tiempoAtraccionAceptada;
 	}
+	*/
+
+	/*
+	 * public Promocion[]
+	 * unirPromosPreferidasYnoPreferidas(Promocion[]promosPreferidas,
+	 * Promocion[]promosNoPreferidas);
+	 * 
+	 * Promocion[]conjuntoPromociones promocionesNoPreferidas(Usuario usuario) =
+	 * Promocion[]promosPreferidas Promocion[]promosNoPreferidas
+	 */
+
+	/*
+	 * public Promocion[] filtroDePromociones(Promocion) {
+	 * 
+	 * }
+	 * 
+	 */
 
 	/**
 	 * Tenemos una lista de atracciones y una de promociones. El printWriter va a
@@ -267,63 +276,140 @@ public class App {
 	 */
 	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException, InvalidNumberException { // NullPointerException,
 																														// RunTimeException
-		Atraccion[] atraccionesSugeridas = new Atraccion[atracciones.length];
 		Atraccion[] atraccionesAceptadas = new Atraccion[atracciones.length];
-		// array promos, y otro array con promos aceptadas.
-		Promocion[] promocionesSugeridas = new Promocion[atracciones.length];
-		/*
-		 * promocionesSugeridas[0] = new Promocion(Atraccion[]); promocionesSugeridas[1]
-		 * = new Promocion();
-		 */
+		Atraccion[] atraccionesPreferidas = this.atraccionesPreferidas(usuario);
+		Atraccion[] atraccionesNoPreferidas = this.atraccionesNoPreferidas(usuario);
+		Promocion[] promocionesPreferidas = this.promocionesPreferidas(usuario);
+		Promocion[] promocionesNoPreferidas = this.promocionesNoPreferidas(usuario);
 
 		int cantidadAceptada = 0;
 
 		PrintWriter sugerenciaDiaria = new PrintWriter(new FileWriter("SugerenciaDiaria.txt"));
 
-		/*
-		 * for (int j = 0; j < promocionesSugeridas.length; j++) {
-		 * 
-		 * if(promocionesSugeridas[i].atraccionesIncluidas[0].tiempoNecesario
-		 * <=usuario.tiempoDisponible && promocionesSugeridas[i].costoDeVisita <=
-		 * usuario.presupuesto) { if (usuario.aceptaOferta() == true) { // Promocion. }
-		 * atraccion.cupoDePersonas --; this.tiempoAtraccionAceptada =
-		 * promocionesSugeridas[i].tiempoNecesario; this.restarTiempoAlAceptarOferta();
-		 * this.costoAtraccionAceptada = promocionesSugeridas[i].costoDeVisita;
-		 * this.restarOroAlAceptarOferta(); atraccionesAceptadas[cantidadAceptada] =
-		 * promocionesSugeridas[i]; cantidadAceptada++;
-		 * sugerenciaDiaria.println(promocionesSugeridas[i]); sugerenciaDiaria.close();
-		 * } } //???????????.atraccionesIncluidas[0].getCostoDeVisita(); }
-		 */
-		for (int i = 0; i < atraccionesSugeridas.length; i++) {
+		// (!EstaAtraccionEnAtracciones(promocionesPreferidas[j].getArrayAtracciones()[j],atraccionesAceptadas))
+		// {
 
-			if (atraccionesSugeridas[i].tiempoNecesario <= usuario.tiempoDisponible
-					&& atraccionesSugeridas[i].costoDeVisita <= usuario.presupuesto) {
-				if (usuario.aceptaOferta() == true) {
-					atraccion.cupoDePersonas--;
-					this.tiempoAtraccionAceptada = atraccionesSugeridas[i].tiempoNecesario;
-					this.restarTiempoAlAceptarOferta();
-					this.costoAtraccionAceptada = atraccionesSugeridas[i].costoDeVisita;
-					this.restarOroAlAceptarOferta();
-					atraccionesAceptadas[cantidadAceptada] = atraccionesSugeridas[i];
-					cantidadAceptada++;
-					sugerenciaDiaria.println(atraccionesSugeridas[i]);
-					sugerenciaDiaria.close();
+		for (int i = 0; i < promocionesPreferidas.length; i++) {
+			if (!seRepiteAtraccionEnPromocion(promocionesPreferidas[i], atraccionesAceptadas)) {
+				if (promocionesPreferidas[i].getTiempoNecesario() <= usuario.tiempoDisponible
+						&& promocionesPreferidas[i].getCostoDeVisita() <= usuario.presupuesto) {
+					if (usuario.aceptaOferta() == true) {
+						promocionesPreferidas[i].restarCupo();
+						usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesPreferidas[i]);
+						sugerenciaDiaria.println(promocionesPreferidas[i]); // Aun no está en funcionamiento.
+						sugerenciaDiaria.close();
+
+						for (int k = 0; k < promocionesPreferidas.length; k++) {
+
+							atraccionesAceptadas[cantidadAceptada] = promocionesPreferidas[i].getArrayAtracciones()[i];
+
+							// promocionesAceptadas[cantidadAceptada] = promocionesPreferidas[j];
+							cantidadAceptada++;
+						}
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < atraccionesPreferidas.length; i++) {
+
+			if (!EstaAtraccionEnAtracciones(atraccionesPreferidas[i], atraccionesAceptadas)) {
+				if (atraccionesPreferidas[i].tiempoNecesario <= usuario.tiempoDisponible
+						&& atraccionesPreferidas[i].costoDeVisita <= usuario.presupuesto) {
+					if (usuario.aceptaOferta() == true) {
+						promocionesPreferidas[i].restarCupo();
+						usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesPreferidas[i]);
+						sugerenciaDiaria.println(atraccionesPreferidas[i]);
+						sugerenciaDiaria.close();
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < promocionesNoPreferidas.length; i++) {
+			if (!seRepiteAtraccionEnPromocion(promocionesNoPreferidas[i], atraccionesAceptadas)) {
+				if (promocionesNoPreferidas[i].getTiempoNecesario() <= usuario.tiempoDisponible
+						&& promocionesNoPreferidas[i].getCostoDeVisita() <= usuario.presupuesto) {
+					if (usuario.aceptaOferta() == true) {
+						promocionesPreferidas[i].restarCupo();
+						usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesPreferidas[i]);
+						sugerenciaDiaria.println(promocionesNoPreferidas[i]);
+						sugerenciaDiaria.close();
+
+						for (int k = 0; k < promocionesNoPreferidas.length; k++) {
+
+							atraccionesAceptadas[cantidadAceptada] = promocionesNoPreferidas[i]
+									.getArrayAtracciones()[k];
+
+							// promocionesAceptadas[cantidadAceptada] = promocionesPreferidas[j];
+							cantidadAceptada++;
+						}
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < atraccionesNoPreferidas.length; i++) {
+
+			if (!EstaAtraccionEnAtracciones(atraccionesNoPreferidas[i], atraccionesAceptadas)) {
+				if (atraccionesNoPreferidas[i].tiempoNecesario <= usuario.tiempoDisponible
+						&& atraccionesNoPreferidas[i].costoDeVisita <= usuario.presupuesto) {
+					if (usuario.aceptaOferta() == true) {
+						promocionesPreferidas[i].restarCupo();
+						usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesPreferidas[i]);
+						sugerenciaDiaria.println(promocionesPreferidas[i]);
+						sugerenciaDiaria.close();
+					}
 				}
 			}
 		}
 		return atraccionesAceptadas;
 	}
 
-	private boolean verificandoQueNoSeRepitaLaAtraccionEnPromocionesAceptadas(Atraccion unaAtraccion) {
-		for (Promocion unaPromocion : promocionesSugeridas) {
-			// Atraccion [] atraccionesPromocionAceptada =
-			// unaPromocion.obtenerAtraccionesIncluidas();
-			// for(Atraccion atraccionPromo : atraccionesPromocionAceptada) {
-			// if (atraccionPromo.equals(unaAtraccion)) {
-			return true;
+	/**
+	 * Revisamos entre las promociones y atracciones que entre las promos sugeridas
+	 * si se repiten o no, devolvemos un boolean. Funciona, crean en nosotros.
+	 * 
+	 * @param unaAtraccion
+	 * @return
+	 */
+
+	/*
+	 * public boolean
+	 * verificandoQueNoSeRepitaLaAtraccionEnAtraccionesAceptadas(Atraccion
+	 * unaAtraccion) {
+	 * 
+	 * for (Atraccion unaAtraccion : atraccionesAceptadas) { Atraccion[]
+	 * atraccionesPromocionAceptada = unaAtraccion.getArrayAtracciones(); for
+	 * (Atraccion atraccionPromo : atraccionesPromocionAceptada) { if
+	 * (atraccionPromo.equals(unaAtraccion)) { return true; } } } return false; }
+	 */
+
+	public boolean EstaAtraccionEnAtracciones(Atraccion atraccion, Atraccion[] atraccionesArray) {
+		for (Atraccion Atr : atraccionesArray) {
+			if (Atr.equals(atraccion)) {
+				return true;
+			}
 		}
-		// }
-		// }
+		return false;
+	}
+
+	/*
+	 * public boolean seRepiteAtraccionEnPromocion(Atraccion atraccion) {
+	 * for(Promocion Promo : promocionesAceptadas){ Atracciones =
+	 * Promo.getArrayAtracciones(); if(EstaAtraccionEnAtracciones(atraccion,
+	 * Atracciones[]){ } return true; } return EstaAtraccionEnAtracciones(atraccion,
+	 * AtraccionesAceptadas); }
+	 */
+
+	public boolean seRepiteAtraccionEnPromocion(Promocion promocion, Atraccion[] atraccionesArray) {
+
+		for (Atraccion unaAtraccion : promocion.getArrayAtracciones()) { // atracciones incluídas.
+
+			if (EstaAtraccionEnAtracciones(unaAtraccion, atraccionesArray)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

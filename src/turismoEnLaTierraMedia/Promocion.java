@@ -17,8 +17,6 @@ public abstract class Promocion implements Comparable<Promocion> {
 
 	// this.atraccionesIncluidas = atraccionesIncluidas;
 
-	// ???????????.atraccionesIncluidas[0].getCostoDeVisita();
-
 	public String getNombre() {
 		return this.nombre;
 	}
@@ -34,6 +32,21 @@ public abstract class Promocion implements Comparable<Promocion> {
 	 */
 	public void setArrayAtracciones(Atraccion[] atraccionesIncluidas) {
 		this.atraccionesIncluidas = atraccionesIncluidas;
+	}
+
+	public Atraccion[] getArrayAtracciones() {
+		return this.atraccionesIncluidas;
+	}
+
+	public String getNombreAtraccion(Atraccion atraccion) {
+		return atraccion.getNombre();
+
+		/*
+		 * String imprimir = (("[" + "Nombre de atracción 1: " + atraccionesIncluidas[0]
+		 * + "," + "Nombre de atracción 2: " + atraccionesIncluidas[1] + "]"));
+		 * 
+		 * return imprimir;
+		 */
 	}
 
 	/**
@@ -54,11 +67,9 @@ public abstract class Promocion implements Comparable<Promocion> {
 		return tiempoTotal;
 	}
 
-	
-	
-	
-	
-	/** Se realiza comparación de promociones, los métodos para los cálculos se encuentran en la propia clase.
+	/**
+	 * Se realiza comparación de promociones, los métodos para los cálculos se
+	 * encuentran en la propia clase.
 	 * 
 	 */
 	@Override
@@ -94,6 +105,16 @@ public abstract class Promocion implements Comparable<Promocion> {
 		Promocion other = (Promocion) obj;
 		return Arrays.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
 	}
-	
+
+	public void restarCupo() {
+		
+		
+		for(int i = 0; i > atraccionesIncluidas.length; i++) {
+			atraccionesIncluidas[i].restarCupo();
+		}
+		
+		
+		
+	}
 
 }
