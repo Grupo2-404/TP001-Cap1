@@ -2,25 +2,21 @@ package turismoEnLaTierraMedia;
 
 public interface Sugerible {
 	
-	public void obtenerValor(int valor);
-	public void obtenerTiempo(double tiempo);
+	public String getNombre();
 	
-	/**compareTo
-	 * Si se repiten promos o atracciones.
-	 * Restar cupos de las atracciones
-	 * Escribir en la sugerencia diaria del usuario
-	 * getCupo
-	 * getAtraccionPreferida
-	 * getTiempo
-	 * getCosto
-	 * 
-	 * 
-	 * 
-	 * 
-	 * Agregar Atracciones y Promociones repiten la lógica.
-	 * Atracciones y Promociones repiten la lógica de ver si son preferidas o no según el tipo preferido del usuario.
-	 */
+	public int getCostoDeVisita();
 	
+	public double getTiempoNecesario();
 	
+	// public boolean esPromocion();
+	
+	//Este método trae el tipo de la atracción o promoción. No el preferido del usuario.
+	public TipoDeAtraccion getTipo();
+	
+	public boolean comprobarCupo();	
+	
+	public void restarCupo();
+	  
+	 //Escribir en la sugerencia diaria del usuario
 	
 }

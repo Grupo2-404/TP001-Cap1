@@ -3,7 +3,7 @@ package turismoEnLaTierraMedia;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Atraccion implements Comparable<Atraccion> {
+public class Atraccion implements Comparable<Atraccion>, Sugerible {
 
 	private String nombre;
 	protected int costoDeVisita;
@@ -19,21 +19,40 @@ public class Atraccion implements Comparable<Atraccion> {
 		this.cupoDePersonas = cupo;
 		this.tipo = tipo;
 	}
-
+	
+	@Override
 	public String getNombre() {
 		return this.nombre;
 	}
 
+	@Override
 	public int getCostoDeVisita() {
 		return costoDeVisita;
 	}
-
-	public Atraccion getAtraccion(Atraccion unaAtraccion) {
-		return unaAtraccion;
+	
+	@Override
+	public boolean comprobarCupo() {
+		return this.cupoDePersonas > 0;
+	}
+	
+	@Override
+	public TipoDeAtraccion getTipo() {
+		return tipo;
 	}
 
 	@Override
-	public int compareTo(Atraccion otra) { // Implementar este método en promociones. (O mejor aún, en la interfaz)
+	public double getTiempoNecesario() {
+		return this.tiempoNecesario;
+	}
+
+	@Override
+	public void restarCupo() {
+		this.cupoDePersonas--;
+	}
+
+
+	@Override
+	public int compareTo(Atraccion otra) { 
 
 		if (costoDeVisita == otra.costoDeVisita) {
 			return (int) (this.tiempoNecesario - otra.tiempoNecesario) * -1;
@@ -41,22 +60,11 @@ public class Atraccion implements Comparable<Atraccion> {
 		return (this.costoDeVisita - otra.costoDeVisita) * -1;
 	}
 
-	/*
-	 * public int getTipoDeAtraccionValor() { TipoDeAtraccion tipo =
-	 * TipoDeAtraccion.ELECCIONDEUSUARIO; return tipo.getValor(); }
-	 */
 
 	public static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) {
-		Arrays.sort(arrayAtracciones); // El sort obtiene el método de órden de compareTo, por lo tanto actualmente
-										// debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
-		/*
-		 * for (int i = 0; i < arrayAtracciones.length; i++) { System.out.println((i +
-		 * 1) + ". " + arrayAtracciones[i].costoDeVisita); System.out.println((i + 1) +
-		 * ". " + arrayAtracciones[i].tiempoNecesario);
-		 * System.out.println("-------------------");
-		 * 
-		 * }
-		 */
+		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente 
+		// debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
+		Arrays.sort(arrayAtracciones); 									
 	}
 
 	@Override
@@ -78,41 +86,4 @@ public class Atraccion implements Comparable<Atraccion> {
 				&& tipo == other.tipo && Objects.equals(usuario, other.usuario);
 	}
 
-	public TipoDeAtraccion getTipo() {
-		return tipo;
-	}
-
-	public double getTiempoNecesario() {
-		return this.tiempoNecesario;
-	}
-
-	public void restarCupo() {
-		this.cupoDePersonas--;
-	}
-
-	/*
-	 * public static void main(String[] args) { Atraccion[] arrayAtracciones = new
-	 * Atraccion[3]; arrayAtracciones[0] = new Atraccion("Atracción 1", 30, 2, 40,
-	 * TipoDeAtraccion.AVENTURA); arrayAtracciones[1] = new Atraccion("Atracción 2",
-	 * 10, 2, 50, TipoDeAtraccion.PAISAJE); arrayAtracciones[2] = new
-	 * Atraccion("Atracción 3", 20, 2, 20, TipoDeAtraccion.AVENTURA);
-	 * 
-	 * Atraccion Moria = new Atraccion("Moria", 33, 31, 40,
-	 * TipoDeAtraccion.AVENTURA); Atraccion Mordor = new Atraccion("Mordor", 35, 2,
-	 * 50, TipoDeAtraccion.PAISAJE);
-	 * 
-	 * System.out.println(Moria.compareTo(Mordor));
-	 * 
-	 * 
-	 * //Moria es más grande que Mordor si el resultado es entero positivo
-	 * 
-	 * 
-	 * //Moria es más chica que Mordor si el resultado es entero negativo
-	 * //ordenarPorMayorCostoYtiempo(arrayAtracciones); }
-	 * 
-	 * /* public String getRegistro() { return "[" + "Nombre de la atracción: " +
-	 * this.atraccion + "," + "Costo: " + this.costoDeVisita + "," +
-	 * "tiempo estimado: " + this.tiempoNecesario + "," + "cupo: " +
-	 * this.cupoDePersonas + "]"; }
-	 */
 }

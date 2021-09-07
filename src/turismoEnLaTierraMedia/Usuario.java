@@ -8,9 +8,6 @@ public class Usuario {
 	protected int presupuesto;
 	protected double tiempoDisponible;
 	private TipoDeAtraccion tipoAtracciónPreferida;
-	private Sugerible[] itinerario;
-	private Promocion[] promociones;
-	private Atraccion[] atracciones;
 	private int atraccionItinerarioAgregada;
 
 	public Usuario(String nombre, TipoDeAtraccion atracciónPreferida, int presupuesto, double tiempoDisponible)
@@ -54,6 +51,7 @@ public class Usuario {
 		this.tiempoDisponible = tiempoDisponible;
 	}
 
+	
 	public boolean aceptaOferta() {
 		// leer captura lo que ingresa el user
 		@SuppressWarnings("resource")
@@ -66,43 +64,65 @@ public class Usuario {
 		return aceptaOrechaza;
 	}
 
-	private void añadirAtracciónAlIntinerario() {
+	
+	private void aniadirAtraccionAlIntinerario() {
 		this.atraccionItinerarioAgregada++;
 	}
 
-	public void aceptoOfertaSugeridaYagregaAlItinerario(Promocion promo) {
+	public void aceptoOfertaSugeridaYagregaAlItinerario(Sugerible sugerencia) {
 
-		this.tiempoDisponible -= promo.getTiempoNecesario();
-		this.presupuesto -= promo.getCostoDeVisita();
+		this.tiempoDisponible -= sugerencia.getTiempoNecesario();
+		this.presupuesto -= sugerencia.getCostoDeVisita();
 		// this.itinerario[atraccionItinerarioAgregada] = promo;
-		añadirAtracciónAlIntinerario();
+		aniadirAtraccionAlIntinerario();
 	}
 
 	/*
-	 * public boolean aceptaOferta(Promocion promo) { // excepción para que no se
-	 * escriba otra cosa?
-	 * 
-	 * this.imprimirPromo(promo);
-	 * 
-	 * // String respuesta = ""; // leer captura lo que ingresa el user
-	 * 
-	 * @SuppressWarnings("resource") Scanner leer = new Scanner(System.in);
-	 * System.out.println("Acepta la oferta?");
-	 * System.out.println("Por favor ingrese SI o NO"); String respuesta =
-	 * leer.next();
-	 * 
-	 * if (respuesta == "SI") { System.out.println("lalala"); }
-	 * 
-	 * while (respuesta != "A" || respuesta != "NO") {
-	 * System.out.println("Usted no ha aceptado la oferta"); return false; //
-	 * System.out.println("Por favor ingrese SI o NO"); // respuesta =
-	 * leer.nextLine(); } // if (respuesta == "SI" || respuesta == "si" || respuesta
-	 * == "Si") { System.out.println("Usted ha aceptado la oferta"); // } //
-	 * System.out.println("Usted no ha aceptado la oferta");
-	 * 
-	 * 
-	 * return respuesta == "SI" || respuesta == "si" || respuesta == "Si"; }
+	  public boolean aceptaOferta(Promocion promo) { 
+	  
+	  this.imprimirPromo(promo);
+	  
+	  // String respuesta = ""; // leer captura lo que ingresa el user
+	  
+	  String respuesta = null, Y = "Si", N = "No";
+	  
+	  @SuppressWarnings("resource") 
+	  Scanner leer = new Scanner(System.in);
+	  System.out.println("Acepta la oferta?");
+	  System.out.println("Por favor ingrese SI o NO"); 
+	  respuesta = leer.nextLine();
+	  //char respuesta = leer.next().charAt(0);
+	 
+	  while (!(respuesta.equalsIgnoreCase(Y) || respuesta.equalsIgnoreCase(N)) ){
+		  
+		  System.out.println("Por favor, ingrese Si o No");
+		  respuesta = leer.nextLine();
+	  }
+	  */
+	  
+	  
+	  
+	  
+	 /* 
+	  if (respuesta == "SI") {
+	   System.out.println("TEST"); 
+	  }
+	  
+	  while (respuesta != "Si" || respuesta != "NO") {
+	  System.out.println("Usted no ha aceptado la oferta");
+	   return false;
+	 
+	   } 
+	    if (respuesta == "SI" || respuesta == "si" || respuesta == "Si") {
+	     System.out.println("Usted ha aceptado la oferta"); 
+	  } 
+	 
+	 System.out.println("Usted no ha aceptado la oferta");
+	  
+	 return respuesta == "SI" || respuesta == "si" || respuesta == "Si"; 
+	 }
 	 */
+	
 	public static void main(String[] args) throws InvalidNumberException {
 
 		App sistema = new App(6, 6, 3);
@@ -119,7 +139,7 @@ public class Usuario {
 		sistema.agregarAtraccion(Erebor);
 		sistema.agregarAtraccion(Mordor);
 
-		Promocion Promocion1 = new PromocionPorcentual("PromoPorcentual1", arrayPromoPorcentual, 10);
+		// Promocion Promocion1 = new PromocionPorcentual("PromoPorcentual1", arrayPromoPorcentual, 10);
 
 		boolean acepta = gime.aceptaOferta();
 		if (acepta == true) {
@@ -156,5 +176,6 @@ public class Usuario {
 		System.out.println("Tiempo necesario: " + promo.getTiempoNecesario());
 		System.out.println("-------------------");
 	}
+
 
 }

@@ -3,7 +3,7 @@ package turismoEnLaTierraMedia;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class Promocion implements Comparable<Promocion> {
+public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 
 	protected Atraccion[] atraccionesIncluidas;
 	private String nombre;
@@ -13,16 +13,69 @@ public abstract class Promocion implements Comparable<Promocion> {
 		this.setArrayAtracciones(arrayAtracciones);
 	}
 
-	public abstract int getCostoDeVisita();
 
-	// this.atraccionesIncluidas = atraccionesIncluidas;
-
+	@Override
 	public String getNombre() {
 		return this.nombre;
 	}
 
+	@Override
+	public void restarCupo() {
+
+		for (int i = 0; i > atraccionesIncluidas.length; i++) {
+			atraccionesIncluidas[i].restarCupo();
+		}
+	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	@Override
+	public boolean comprobarCupo() {
+
+		for (int i = 0; i < atraccionesIncluidas.length; i++) {
+
+			if (!atraccionesIncluidas[i].comprobarCupo()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Obtenemos el tipo de la atracción de la posición 0, ya que todas las
+	 * atracciones van a tener el mismo tipo.
+	 * 
+	 */
+	@Override
+	public TipoDeAtraccion getTipo() {
+		return this.atraccionesIncluidas[0].getTipo();
+	}
+
+	@Override
+	public double getTiempoNecesario() {
+		int tiempoTotal = 0;
+
+		for (int i = 0; i < atraccionesIncluidas.length; i++) {
+			tiempoTotal += atraccionesIncluidas[i].getTiempoNecesario();
+		}
+		return tiempoTotal;
+	}
+
+	/**
+	 * Se realiza comparación de promociones, los métodos para los cálculos se
+	 * encuentran en la propia clase.
+	 * 
+	 */
+
+	@Override
+	public int compareTo(Promocion otra) { // Implementar este método en promociones. (O mejor aún, en la interfaz)
+
+		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
+			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+		}
+		return (this.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
 	}
 
 	/**
@@ -40,45 +93,12 @@ public abstract class Promocion implements Comparable<Promocion> {
 
 	public String getNombreAtraccion(Atraccion atraccion) {
 		return atraccion.getNombre();
-
 		/*
 		 * String imprimir = (("[" + "Nombre de atracción 1: " + atraccionesIncluidas[0]
 		 * + "," + "Nombre de atracción 2: " + atraccionesIncluidas[1] + "]"));
 		 * 
 		 * return imprimir;
 		 */
-	}
-
-	/**
-	 * Obtenemos el tipo de la atracción de la posición 0, ya que todas las
-	 * atracciones van a tener el mismo tipo.
-	 * 
-	 */
-	public TipoDeAtraccion getTipo() {
-		return this.atraccionesIncluidas[0].getTipo();
-	}
-
-	public double getTiempoNecesario() {
-		int tiempoTotal = 0;
-
-		for (int i = 0; i < atraccionesIncluidas.length; i++) {
-			tiempoTotal += atraccionesIncluidas[i].getTiempoNecesario();
-		}
-		return tiempoTotal;
-	}
-
-	/**
-	 * Se realiza comparación de promociones, los métodos para los cálculos se
-	 * encuentran en la propia clase.
-	 * 
-	 */
-	@Override
-	public int compareTo(Promocion otra) { // Implementar este método en promociones. (O mejor aún, en la interfaz)
-
-		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
-			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
-		}
-		return (this.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
 	}
 
 	public static void ordenarPorMayorCostoYtiempo(Promocion[] arrayPromociones) {
@@ -104,17 +124,6 @@ public abstract class Promocion implements Comparable<Promocion> {
 			return false;
 		Promocion other = (Promocion) obj;
 		return Arrays.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
-	}
-
-	public void restarCupo() {
-		
-		
-		for(int i = 0; i > atraccionesIncluidas.length; i++) {
-			atraccionesIncluidas[i].restarCupo();
-		}
-		
-		
-		
 	}
 
 }
