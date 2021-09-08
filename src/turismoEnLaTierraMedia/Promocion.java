@@ -13,7 +13,6 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 		this.setArrayAtracciones(arrayAtracciones);
 	}
 
-
 	@Override
 	public String getNombre() {
 		return this.nombre;
@@ -22,7 +21,7 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 	@Override
 	public void restarCupo() {
 
-		for (int i = 0; i > atraccionesIncluidas.length; i++) {
+		for (int i = 0; i < atraccionesIncluidas.length; i++) {
 			atraccionesIncluidas[i].restarCupo();
 		}
 	}
@@ -55,10 +54,12 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 
 	@Override
 	public double getTiempoNecesario() {
-		int tiempoTotal = 0;
+		double tiempoTotal = 0;
 
 		for (int i = 0; i < atraccionesIncluidas.length; i++) {
-			tiempoTotal += atraccionesIncluidas[i].getTiempoNecesario();
+			if (atraccionesIncluidas != null) {
+				tiempoTotal += atraccionesIncluidas[i].getTiempoNecesario();
+			}
 		}
 		return tiempoTotal;
 	}

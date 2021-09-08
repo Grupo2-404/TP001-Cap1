@@ -218,14 +218,16 @@ public class App {
 	 * @throws IOException
 	 * @throws InvalidNumberException
 	 */
-	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException, InvalidNumberException { // NullPointerException,
-																														// RunTimeException
+	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException, InvalidNumberException { 
+																														
 		Atraccion[] atraccionesAceptadas = new Atraccion[atracciones.length];
 		Atraccion[] atraccionesPreferidas = this.atraccionesPreferidas(usuario);
 		Atraccion[] atraccionesNoPreferidas = this.atraccionesNoPreferidas(usuario);
 		Promocion[] promocionesPreferidas = this.promocionesPreferidas(usuario);
 		Promocion[] promocionesNoPreferidas = this.promocionesNoPreferidas(usuario);
-
+		Sugerible[] itinerario = new Sugerible[atracciones.length];
+ 		
+		int cantSugerenciaAceptada = 0;
 		int cantidadAceptada = 0;
 
 		// PrintWriter sugerenciaDiaria = new PrintWriter(new
@@ -243,17 +245,20 @@ public class App {
 				if (usuario.aceptaOferta() == true) {
 					promocionesPreferidas[i].restarCupo();
 					usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesPreferidas[i]);
+					itinerario[cantSugerenciaAceptada]=promocionesPreferidas[i];
+					cantSugerenciaAceptada++;
+					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
+					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
 					// sugerenciaDiaria.println(promocionesPreferidas[i]); // Aun no está en
 					// funcionamiento.
 					// sugerenciaDiaria.close();
 
-					for (int k = 0; k < promocionesPreferidas.length; k++) {
+					for (int k = 0; k < promocionesPreferidas[i].getArrayAtracciones().length; k++) {
 
 						atraccionesAceptadas[cantidadAceptada] = promocionesPreferidas[i].getArrayAtracciones()[k];
 						cantidadAceptada++;
-						
 					}
-				}
+				}	
 			}
 		}
 
@@ -266,6 +271,10 @@ public class App {
 				if (usuario.aceptaOferta() == true) {
 					atraccionesPreferidas[i].restarCupo();
 					usuario.aceptoOfertaSugeridaYagregaAlItinerario(atraccionesPreferidas[i]);
+					itinerario[cantSugerenciaAceptada]=atraccionesPreferidas[i];
+					cantSugerenciaAceptada++;
+					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
+					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
 					atraccionesAceptadas[cantidadAceptada] = atraccionesPreferidas[i];
 					cantidadAceptada++;
 					// sugerenciaDiaria.println(atraccionesPreferidas[i]);
@@ -287,10 +296,14 @@ public class App {
 				if (usuario.aceptaOferta() == true) {
 					promocionesNoPreferidas[i].restarCupo();
 					usuario.aceptoOfertaSugeridaYagregaAlItinerario(promocionesNoPreferidas[i]);
+					itinerario[cantSugerenciaAceptada]=promocionesNoPreferidas[i];
+					cantSugerenciaAceptada++;
+					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
+					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
 					// sugerenciaDiaria.println(promocionesNoPreferidas[i]);
 					// sugerenciaDiaria.close();
 
-					for (int k = 0; k < promocionesNoPreferidas.length; k++) {
+					for (int k = 0; k < promocionesNoPreferidas[i].getArrayAtracciones().length; k++) {
 
 						atraccionesAceptadas[cantidadAceptada] = promocionesNoPreferidas[i].getArrayAtracciones()[k];
 						cantidadAceptada++;
@@ -308,7 +321,11 @@ public class App {
 				if (usuario.aceptaOferta() == true) {
 					atraccionesNoPreferidas[i].restarCupo();
 					usuario.aceptoOfertaSugeridaYagregaAlItinerario(atraccionesNoPreferidas[i]);
-					atraccionesAceptadas[cantidadAceptada] = atraccionesNoPreferidas[i];
+					itinerario[cantSugerenciaAceptada]=atraccionesNoPreferidas[i];
+					cantSugerenciaAceptada++;
+					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
+					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
+					atraccionesAceptadas[cantidadAceptada] = atraccionesNoPreferidas[i];			 
 					cantidadAceptada++;
 					// sugerenciaDiaria.println(promocionesPreferidas[i]);
 					// sugerenciaDiaria.close();
@@ -328,9 +345,18 @@ public class App {
 				promocionesNoPreferidas.length);
 		promocionesVigentes = test1;
 
+		for (int i = 0; i < atraccionesAceptadas.length; i++) {
+			if(atraccionesAceptadas[i] != null) {
+			System.out.println((i + 1) + ". " + atraccionesAceptadas[i].getNombre());
+			System.out.println("-------------------");
+			}
+		}
+		usuario.recibirItinerario(itinerario);
 		return atraccionesAceptadas;
 	}
 
+	
+	
 	/**
 	 * Revisamos entre las promociones y atracciones que entre las promos sugeridas
 	 * si se repiten o no, devolvemos un boolean. Funciona, crean en nosotros.
@@ -349,7 +375,6 @@ public class App {
 	 * (Atraccion atraccionPromo : atraccionesPromocionAceptada) { if
 	 * (atraccionPromo.equals(unaAtraccion)) { return true; } } } return false; }
 	 */
-
 	public boolean EstaAtraccionEnAtracciones(Atraccion atraccion, Atraccion[] atraccionesArray) {
 		for (Atraccion Atr : atraccionesArray) {
 			if (Atr != null) {
@@ -390,15 +415,27 @@ public class App {
 		}
 	}
 
+	
+	public String resumenItinerario() {
+		
+		
+		
+		
+		return "a";
+	}
+	
+	
+	
+	
 	public static void main(String[] args) throws InvalidNumberException, IOException {
 
 		App sistema = new App(1, 9, 3);
 		Usuario Axel = new Usuario("Axel", TipoDeAtraccion.AVENTURA, 400, 80);
-		
+		sistema.agregarUsuario(Axel);
 		
 		Atraccion[] arrayAtracciones = new Atraccion[3];
 		
-		arrayAtracciones[0] = new Atraccion("Atracción 1", 30, 2, 40, TipoDeAtraccion.AVENTURA);
+		arrayAtracciones[0] = new Atraccion("Atracción 1", 30, 2, 0, TipoDeAtraccion.AVENTURA);
 		arrayAtracciones[1] = new Atraccion("Atracción 2", 10, 2, 50, TipoDeAtraccion.PAISAJE);
 		arrayAtracciones[2] = new Atraccion("Atracción 3", 20, 2, 20, TipoDeAtraccion.AVENTURA);
 		
@@ -408,9 +445,9 @@ public class App {
 		
 		
 		
-		Atraccion Mordor = new Atraccion("Mordor", 12, 3, 4, TipoDeAtraccion.PAISAJE);
-		Atraccion Erebor = new Atraccion("Erebor", 15, 3, 32, TipoDeAtraccion.PAISAJE);
-		Atraccion MinasTirith = new Atraccion("MinasTirith", 5, 2.5, 25, TipoDeAtraccion.DEGUSTACION);
+		Atraccion Mordor = new Atraccion("Mordor", 12, 3, 10, TipoDeAtraccion.PAISAJE);
+		Atraccion Erebor = new Atraccion("Erebor", 15, 3, 30, TipoDeAtraccion.PAISAJE);
+		Atraccion MinasTirith = new Atraccion("MinasTirith", 5, 2.5, 20, TipoDeAtraccion.DEGUSTACION);
 		Atraccion LaComarca = new Atraccion("LaComarca", 23, 6.5, 20, TipoDeAtraccion.DEGUSTACION);
 		Atraccion Lothlorien = new Atraccion("Lothlorien", 13, 4, 60, TipoDeAtraccion.DEGUSTACION);
 		Atraccion AbismoDeHelm = new Atraccion("AbismoDeHelm", 33, 6.5, 50, TipoDeAtraccion.DEGUSTACION);
@@ -445,14 +482,17 @@ public class App {
 		sistema.ofertarMientrasQueHayaOroYtiempo(Axel);
 
 		for (int i = 0; i < sistema.atracciones.length; i++) {
-			System.out.println((i + 1) + ". " + sistema.atracciones[i].costoDeVisita);
-			System.out.println((i + 1) + ". " + sistema.atracciones[i].tiempoNecesario);
-			System.out.println((i + 1) + ". " + sistema.atracciones[i].cupoDePersonas);
+			
+			
+			System.out.println((i + 1) + ". El nombre de la atracción es: " + sistema.atracciones[i].getNombre());
+			System.out.println((i + 1) + ". El costo de la atracción es: " + sistema.atracciones[i].costoDeVisita);
+			System.out.println((i + 1) + ". El tiempo de la atracción es: " + sistema.atracciones[i].tiempoNecesario);
+			System.out.println((i + 1) + ". El cupo de la atracción es: " + sistema.atracciones[i].cupoDePersonas);
 			System.out.println("-------------------");
 		}
-
-		// ordenarPorMayorCostoYtiempo(arrayAtracciones);
-
+		
+			System.out.println("El presupuesto actual del usuario es: " + Axel.getPresupuesto());
+			System.out.println("El tiempo disponible del usuario es: " + Axel.getTiempoDisponible());
 	}
 }
 
