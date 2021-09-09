@@ -1,4 +1,4 @@
-package turismoEnLaTierraMedia;
+	package turismoEnLaTierraMedia;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -26,7 +26,7 @@ public abstract class Promocion implements Comparable<Promocion> {
 	}
 
 	/**
-	 * Pasamos por parámetro las atracciones que estarán incluídas en la promoción.
+	 * Pasamos por parï¿½metro las atracciones que estarï¿½n incluï¿½das en la promociï¿½n.
 	 * 
 	 * @param atraccionesIncluidas
 	 */
@@ -42,15 +42,15 @@ public abstract class Promocion implements Comparable<Promocion> {
 		return atraccion.getNombre();
 
 		/*
-		 * String imprimir = (("[" + "Nombre de atracción 1: " + atraccionesIncluidas[0]
-		 * + "," + "Nombre de atracción 2: " + atraccionesIncluidas[1] + "]"));
+		 * String imprimir = (("[" + "Nombre de atracciï¿½n 1: " + atraccionesIncluidas[0]
+		 * + "," + "Nombre de atracciï¿½n 2: " + atraccionesIncluidas[1] + "]"));
 		 * 
 		 * return imprimir;
 		 */
 	}
 
 	/**
-	 * Obtenemos el tipo de la atracción de la posición 0, ya que todas las
+	 * Obtenemos el tipo de la atracciï¿½n de la posiciï¿½n 0, ya que todas las
 	 * atracciones van a tener el mismo tipo.
 	 * 
 	 */
@@ -68,12 +68,12 @@ public abstract class Promocion implements Comparable<Promocion> {
 	}
 
 	/**
-	 * Se realiza comparación de promociones, los métodos para los cálculos se
+	 * Se realiza comparaciï¿½n de promociones, los mï¿½todos para los cï¿½lculos se
 	 * encuentran en la propia clase.
 	 * 
 	 */
 	@Override
-	public int compareTo(Promocion otra) { // Implementar este método en promociones. (O mejor aún, en la interfaz)
+	public int compareTo(Promocion otra) { // Implementar este mï¿½todo en promociones. (O mejor aï¿½n, en la interfaz)
 
 		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
 			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
@@ -108,10 +108,9 @@ public abstract class Promocion implements Comparable<Promocion> {
 
 	public void restarCupo() {
 		
-		
-		for(int i = 0; i > atraccionesIncluidas.length; i++) {
-			atraccionesIncluidas[i].restarCupo();
-		}
+	for(int i = 0; i > atraccionesIncluidas.length; i++) {
+		atraccionesIncluidas[i].restarCupo();
+	}
 		
 		
 		

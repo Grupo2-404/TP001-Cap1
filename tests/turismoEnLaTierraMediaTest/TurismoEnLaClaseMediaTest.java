@@ -1,5 +1,5 @@
-package turismoEnLaTierraMediaTest;
 
+package turismoEnLaTierraMediaTest;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import turismoEnLaTierraMedia.*;
 
 public class TurismoEnLaClaseMediaTest {
 
-	@Before
+	@Before 
 	public void preparacion() throws InvalidNumberException {
 		App tierraMedia = new App(50, 20, 10);
 		Usuario Axel = new Usuario("Axel", TipoDeAtraccion.AVENTURA, 10000, 12.00);

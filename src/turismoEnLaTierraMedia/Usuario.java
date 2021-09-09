@@ -8,9 +8,9 @@ public class Usuario {
 	protected int presupuesto;
 	protected double tiempoDisponible;
 	private TipoDeAtraccion tipoAtraccionPreferida;
-	private Sugerible[] itinerario;
-	private Promocion[] promociones;
-	private Atraccion[] atracciones;
+	//private Sugerible[] itinerario;
+	//private Promocion[] promociones;
+	//private Atraccion[] atracciones;
 	private int atraccionItinerarioAgregada;
 
 	public Usuario(String nombre, TipoDeAtraccion atraccionPreferida, int presupuesto, double tiempoDisponible)
@@ -54,16 +54,48 @@ public class Usuario {
 		this.tiempoDisponible = tiempoDisponible;
 	}
 
-	public boolean aceptaOferta() {
-		// leer captura lo que ingresa el user
-		@SuppressWarnings("resource")
-		Scanner leer = new Scanner(System.in);
-		System.out.println("Acepta la oferta?");
-		System.out.println("Por favor ingrese true o false");
+	public boolean aceptaOferta(Promocion promo) {
+		
+	this.imprimirPromo(promo);
+	
+	@SuppressWarnings("resource")
+	Scanner leer = new Scanner(System.in);
+	System.out.println("Acepta la oferta?");
+	System.out.println("Por favor ingrese true o false");
 
-		boolean aceptaOrechaza = leer.nextBoolean();
+	boolean aceptaOrechaza = leer.nextBoolean();
 
-		return aceptaOrechaza;
+	return aceptaOrechaza;
+	
+
+    /*String respuesta = ""; // leer captura lo que ingresa el user
+
+	  @SuppressWarnings("resource") 
+	  Scanner leer = new Scanner(System.in);
+	  System.out.println("Acepta la oferta?");
+	  System.out.println("Por favor ingrese SI o NO"); 
+	  respuesta = leer.nextLine();
+	
+	  if (respuesta == "SI") {
+		  System.out.println("TEST"); 
+	  }
+
+      while (respuesta != "Si" | respuesta != "NO") {
+    	  System.out.println("Usted no ha aceptado la oferta");
+    	  System.out.println("Por favor ingrese SI o NO");
+    	  return false;
+      } 
+      
+      if (respuesta == "SI" | respuesta == "si" | respuesta == "Si") {
+         System.out.println("Usted ha aceptado la oferta"); 
+      } 
+
+     System.out.println("Usted no ha aceptado la oferta");
+
+     return respuesta == "SI" | respuesta == "si" || respuesta == "Si"; */
+		
+		//leer captura lo que ingresa el user
+	
 	}
 
 	private void aniadirAtraccionAlIntinerario() {
@@ -78,31 +110,7 @@ public class Usuario {
 		aniadirAtraccionAlIntinerario();
 	}
 
-	/*
-	 * public boolean aceptaOferta(Promocion promo) { // excepci�n para que no se
-	 * escriba otra cosa?
-	 * 
-	 * this.imprimirPromo(promo);
-	 * 
-	 * // String respuesta = ""; // leer captura lo que ingresa el user
-	 * 
-	 * @SuppressWarnings("resource") Scanner leer = new Scanner(System.in);
-	 * System.out.println("Acepta la oferta?");
-	 * System.out.println("Por favor ingrese SI o NO"); String respuesta =
-	 * leer.next();
-	 * 
-	 * if (respuesta == "SI") { System.out.println("lalala"); }
-	 * 
-	 * while (respuesta != "A" || respuesta != "NO") {
-	 * System.out.println("Usted no ha aceptado la oferta"); return false; //
-	 * System.out.println("Por favor ingrese SI o NO"); // respuesta =
-	 * leer.nextLine(); } // if (respuesta == "SI" || respuesta == "si" || respuesta
-	 * == "Si") { System.out.println("Usted ha aceptado la oferta"); // } //
-	 * System.out.println("Usted no ha aceptado la oferta");
-	 * 
-	 * 
-	 * return respuesta == "SI" || respuesta == "si" || respuesta == "Si"; }
-	 */
+	
 	public static void main(String[] args) throws InvalidNumberException {
 
 		App sistema = new App(6, 6, 3);
@@ -119,13 +127,13 @@ public class Usuario {
 		sistema.agregarAtraccion(Erebor);
 		sistema.agregarAtraccion(Mordor);
 
-		Promocion Promocion1 = new PromocionPorcentual("PromoPorcentual1", arrayPromoPorcentual, 10);
+		Promocion promocion1 = new PromocionPorcentual("PromoPorcentual1", arrayPromoPorcentual, 10);
 
-		boolean acepta = gime.aceptaOferta();
+		boolean acepta = gime.aceptaOferta(promocion1);
 		if (acepta == true) {
-			System.out.println("Usted a Aceptado la Oferta");
+			System.out.println("Acepto la oferta!!");
 		} else if (acepta == false) {
-			System.out.println("Usted No acepta la oferta");
+			System.out.println("Usted no aceptó la oferta");
 		}
 
 		// boolean acepta = gime.aceptaOferta(Promocion1);
