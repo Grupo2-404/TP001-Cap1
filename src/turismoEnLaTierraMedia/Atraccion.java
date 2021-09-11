@@ -12,14 +12,15 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 	private TipoDeAtraccion tipo;
 	private Usuario usuario;
 
-	public Atraccion(String nombre, int costo, double tiempo, int cupo, TipoDeAtraccion tipo) {
-		this.nombre = nombre;
+	public Atraccion(String nombre, int costo, double tiempo, int cupo, TipoDeAtraccion tipo)  { 
+																								
+		this.nombre = nombre;;
 		this.costoDeVisita = costo;
 		this.tiempoNecesario = tiempo;
 		this.cupoDePersonas = cupo;
 		this.tipo = tipo;
 	}
-	
+
 	@Override
 	public String getNombre() {
 		return this.nombre;
@@ -29,12 +30,12 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 	public int getCostoDeVisita() {
 		return costoDeVisita;
 	}
-	
+
 	@Override
 	public boolean comprobarCupo() {
 		return this.cupoDePersonas > 0;
 	}
-	
+
 	@Override
 	public TipoDeAtraccion getTipo() {
 		return tipo;
@@ -50,21 +51,30 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 		this.cupoDePersonas--;
 	}
 
-
 	@Override
-	public int compareTo(Atraccion otra) { 
+	public int compareTo(Atraccion otra) {
 
 		if (costoDeVisita == otra.costoDeVisita) {
 			return (int) (this.tiempoNecesario - otra.tiempoNecesario) * -1;
 		}
 		return (this.costoDeVisita - otra.costoDeVisita) * -1;
 	}
+	
+	@Override
+	public void imprimirOferta() {
+		
+		System.out.println("Usted está accediendo a la atracción: " + this.getNombre().toUpperCase() + ".");
+		System.out.println("El costo de la atracción es: " + this.getCostoDeVisita() + " monedas.");
+		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
+		System.out.println("-----------------------------------------------------------------");
+	}
+	
+	
 
-
-	public static void ordenarPorMayorCostoYtiempo(Atraccion[] arrayAtracciones) {
-		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente 
+	public static void ordenarPorMayorCostoYtiempo(Sugerible[] arrayAtracciones) {		// Revisar si lo pasamos a App.
+		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente
 		// debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
-		Arrays.sort(arrayAtracciones); 									
+		Arrays.sort(arrayAtracciones);
 	}
 
 	@Override
@@ -84,6 +94,9 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 		return costoDeVisita == other.costoDeVisita && Objects.equals(nombre, other.nombre)
 				&& Double.doubleToLongBits(tiempoNecesario) == Double.doubleToLongBits(other.tiempoNecesario)
 				&& tipo == other.tipo && Objects.equals(usuario, other.usuario);
+	}
+	
+	public static void main(String[] args) throws Exception{
 	}
 
 }

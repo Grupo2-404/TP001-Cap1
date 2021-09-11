@@ -11,18 +11,14 @@ public class PromocionAbsoluta extends Promocion {
 
 	@Override
 	public int getCostoDeVisita() {
-
+		
 		int costoTotal = 0;
-
+		
 		for (int i = 0; i < super.atraccionesIncluidas.length; i++) {
 			costoTotal += atraccionesIncluidas[i].getCostoDeVisita();
 		}
 		return costoTotal - MONEDAS;
-	}
-
-	@Override
-	public String getNombre() { // Consultar si es necesario crear el método o lo heredamos directamente.
-		return super.getNombre();
+		// return MONEDAS;
 	}
 
 }

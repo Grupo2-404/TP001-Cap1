@@ -1,0 +1,3 @@
+ABSOLUTA,PromoAventura,11,Moria,BosqueNegro
+PORCENTUAL,PromoDegustacion,10,LaComarca,Lothlorien
+AXB,PromoPaisaje,MinasTirith,AbismoDeHelm,Erebor

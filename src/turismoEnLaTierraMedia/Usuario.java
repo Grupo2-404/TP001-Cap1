@@ -1,9 +1,9 @@
 package turismoEnLaTierraMedia;
 
-import java.io.IOException;
-import java.util.Scanner;
-
-import org.hamcrest.core.IsNull;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.*;
 
 public class Usuario {
 
@@ -11,15 +11,14 @@ public class Usuario {
 	protected int presupuesto;
 	protected double tiempoDisponible;
 	private TipoDeAtraccion tipoAtracciónPreferida;
-	private int atraccionItinerarioAgregada;
 	private Sugerible[] itinerario;
 
 	public Usuario(String nombre, TipoDeAtraccion atracciónPreferida, int presupuesto, double tiempoDisponible)
 			throws InvalidNumberException {
 		this.nombre = nombre;
 		this.tipoAtracciónPreferida = atracciónPreferida;
-		this.setPresupuesto(presupuesto);
-		this.setTiempoDisponible(tiempoDisponible);
+		this.presupuesto = presupuesto;
+		this.tiempoDisponible = tiempoDisponible;
 	}
 
 	public String getNombre() {
@@ -38,45 +37,11 @@ public class Usuario {
 		return this.tiempoDisponible;
 	}
 
-	public void setPresupuesto(int presupuesto) throws InvalidNumberException { // Tratar la excepción adecuadamente.
-
-		if (presupuesto < 1) {
-			throw new InvalidNumberException("El presupuesto no puede ser menor que 1");
-		}
-		this.presupuesto = presupuesto;
-	}
-
-	public void setTiempoDisponible(double tiempoDisponible) throws InvalidNumberException { // Tratar la excepción
-																								// adecuadamente.
-
-		if (tiempoDisponible < 1.00) {
-			throw new InvalidNumberException("El tiempo no puede ser menor que 1");
-		}
-		this.tiempoDisponible = tiempoDisponible;
-	}
-
-	/*
-	 * public boolean aceptaOferta() { // leer captura lo que ingresa el user
-	 * 
-	 * @SuppressWarnings("resource") Scanner leer = new Scanner(System.in);
-	 * System.out.println("Acepta la oferta?");
-	 * System.out.println("Por favor ingrese true o false");
-	 * 
-	 * boolean aceptaOrechaza = leer.nextBoolean();
-	 * 
-	 * return aceptaOrechaza; }
-	 */
-
-	private void aniadirAtraccionAlIntinerario() {
-		this.atraccionItinerarioAgregada++;
-	}
-
-	public void aceptoOfertaSugeridaYagregaAlItinerario(Sugerible sugerencia) {
+	
+	public void aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(Sugerible sugerencia) {
 
 		this.tiempoDisponible -= sugerencia.getTiempoNecesario();
 		this.presupuesto -= sugerencia.getCostoDeVisita();
-		// this.itinerario[atraccionItinerarioAgregada] = promo;
-		aniadirAtraccionAlIntinerario();
 	}
 
 	/*
@@ -109,124 +74,105 @@ public class Usuario {
 	 * No. Volviendo a pedirnos que ingresemos alguno de los valores y volviendo a
 	 * comprobarlo hasta que uno de ellos sea ingresado.
 	 */
-	public boolean aceptaOferta() { // Promocion promo - parámetro para leer acá mismo la promo a aceptar?
-									// Implementar algo similar para las atracciones.
-
-		// this.imprimirPromo(promo);
+	public boolean aceptaOferta(Sugerible sugerible ) { 
+									
+		sugerible.imprimirOferta();
 
 		System.out.println("¿Acepta la oferta?");
 
 		String respuesta = null, Y = "Si", N = "No";
 
-		Scanner leer = new Scanner(System.in);
-
 		do {
 			System.out.println("");
 			System.out.println("Por favor, ingrese Si o No");
-			respuesta = leer.nextLine();
-			// leer.hasNext()
+			respuesta = crearPanel();
 
 			if (respuesta.equalsIgnoreCase(Y)) {
-
+				avisoCompraAceptada();
+				System.out.println("------------------------------");
 				return true;
 			}
 			if ((respuesta.equalsIgnoreCase(N))) {
-
+				avisoCompraNoAceptada();
+				System.out.println("------------------------------");
 				return false;
 			}
 		} while (!(respuesta.equalsIgnoreCase(Y) || respuesta.equalsIgnoreCase(N)));
-
+		System.out.println("El programa se ha comportado de forma inesperada");
 		return false;
 	}
 
-	public void imprimirPromo(Promocion promo) {
+	public String crearPanel() {
 
-		System.out.println("Nombre de promoción: " + promo.getNombre());
+		int seleccion = JOptionPane.showOptionDialog(null, "¿Acepta la compra?", "Seleccione opcion",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, // null para icono por defecto.
+				null, new Object[] { "Si", "No" }, // null para YES, NO y CANCEL
+				null);
 
-		for (int i = 0; i < promo.getArrayAtracciones().length; i++) {
-			System.out.println((i + 1) + ". " + promo.getNombreAtraccion(promo.getArrayAtracciones()[i]));
-
+		if (seleccion == 0) {
+			System.out.println("Si");
+			return "Si";
 		}
-		System.out.println("-------------------");
-		System.out.println("costo de la promoción: " + promo.getCostoDeVisita());
-		System.out.println("Tiempo necesario: " + promo.getTiempoNecesario());
-		System.out.println("-------------------");
+		System.out.println("No");
+		return "No";
 	}
 
+	public void avisoCompraAceptada() {
+		JOptionPane.showMessageDialog(null, "Usted ha aceptado la oferta");
+
+		System.out.println("Usted ha aceptado la oferta");
+
+	}
+
+	public void avisoCompraNoAceptada() {
+		JOptionPane.showMessageDialog(null, "Usted no ha aceptado la oferta");
+
+		System.out.println("Usted no ha aceptado la oferta");
+
+	}
+	
 	public void recibirItinerario(Sugerible[] itinerario) {
 		this.itinerario = itinerario;
 	}
 
-	public void imprimirItinerario() {
+	/** El método almacena el costo y el tiempo de cada atracción o promoción aceptada y los suma hasta terminar de recorrer la lista, mostramos ambos resultados al final de la ejecución.
+	 * Luego, mostramos en consola (y al mismo tiempo almacenamos en el archivo de salida) el nombre de cada atracción o promoción aceptada.
+	 * El DateTimeFormatter y el LocalDateTime se utilizan para generar un nombre de archivo único (en base a la fecha y hora), junto con el nombre de usuario.
+	 * @throws IOException
+	 */
+	public void imprimirItinerario() throws IOException {
 
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");  
+		 LocalDateTime now = LocalDateTime.now(); 
+		
 		int costoTotal = 0;
 		double tiempoTotal = 0.0;
-
+		PrintWriter salida = new PrintWriter(new FileWriter(dtf.format(now) + " " + this.nombre + " Ticket.out"));
+		
+		salida.println("Ud. ha adquirido: ");
+		System.out.println("Ud. ha adquirido: ");
 		for (int i = 0; i < itinerario.length; i++) {
 			if (itinerario[i] != null) {
 				costoTotal += itinerario[i].getCostoDeVisita();
 				tiempoTotal += itinerario[i].getTiempoNecesario();
-
-				System.out.println((i + 1) + ". Su compra fue: " + itinerario[i].getNombre());
+				salida.println((i + 1) + ". " + itinerario[i].getNombre().toUpperCase());
+				System.out.println((i + 1) + ". " + itinerario[i].getNombre().toUpperCase());
 			}
 		}
-
-		System.out.println("El costo total de su itinerario es : " + costoTotal);
-		System.out.println("El tiempo necesario para realizar su itinerario es : " + tiempoTotal);
+		salida.println("El costo total de su itinerario es: " + costoTotal + " monedas.");
+		salida.println("El tiempo necesario para realizar su itinerario es: " + tiempoTotal + " horas.");
+		salida.println("Muchas gracias por haber elegido nuestros servicios.¡Que tenga un buen día!");
+		System.out.println("El costo total de su itinerario es: " + costoTotal + " monedas.");
+		System.out.println("La duración total de su itinerario es de: " + tiempoTotal + " horas.");
+		System.out.println("Muchas gracias por haber elegido nuestros servicios.¡Que tenga un buen día!");
+		System.out.println("");
+		System.out.println("");
+		
+		salida.close();
 	}
 
 	public static void main(String[] args) throws InvalidNumberException, IOException {
-
-		App sistema = new App(1, 9, 3);
-
-		Usuario gime = new Usuario("Gimena", TipoDeAtraccion.AVENTURA, 200, 50);
-
-		Atraccion[] arrayAtracciones = new Atraccion[3];
-
-		arrayAtracciones[0] = new Atraccion("Atracción 1", 30, 2, 0, TipoDeAtraccion.AVENTURA);
-		arrayAtracciones[1] = new Atraccion("Atracción 2", 10, 2, 50, TipoDeAtraccion.PAISAJE);
-		arrayAtracciones[2] = new Atraccion("Atracción 3", 20, 2, 20, TipoDeAtraccion.AVENTURA);
-
-		sistema.agregarAtraccion(arrayAtracciones[0]);
-		sistema.agregarAtraccion(arrayAtracciones[1]);
-		sistema.agregarAtraccion(arrayAtracciones[2]);
-
-		Atraccion Mordor = new Atraccion("Mordor", 12, 3, 10, TipoDeAtraccion.PAISAJE);
-		Atraccion Erebor = new Atraccion("Erebor", 15, 3, 30, TipoDeAtraccion.PAISAJE);
-		Atraccion MinasTirith = new Atraccion("MinasTirith", 5, 2.5, 20, TipoDeAtraccion.DEGUSTACION);
-		Atraccion LaComarca = new Atraccion("LaComarca", 23, 6.5, 20, TipoDeAtraccion.DEGUSTACION);
-		Atraccion Lothlorien = new Atraccion("Lothlorien", 13, 4, 60, TipoDeAtraccion.DEGUSTACION);
-		Atraccion AbismoDeHelm = new Atraccion("AbismoDeHelm", 33, 6.5, 50, TipoDeAtraccion.DEGUSTACION);
-
-		sistema.agregarAtraccion(Mordor);
-		sistema.agregarAtraccion(Erebor);
-		sistema.agregarAtraccion(MinasTirith);
-		sistema.agregarAtraccion(LaComarca);
-		sistema.agregarAtraccion(Lothlorien);
-		sistema.agregarAtraccion(AbismoDeHelm);
-
-		Atraccion[] arrayPromoPorcentual = new Atraccion[2];
-		arrayPromoPorcentual[0] = Mordor;
-		arrayPromoPorcentual[1] = Erebor;
-
-		Atraccion[] arrayPromoPorcentual2 = new Atraccion[2];
-		arrayPromoPorcentual2[0] = MinasTirith;
-		arrayPromoPorcentual2[1] = LaComarca;
-
-		Atraccion[] arrayPromoPorcentual3 = new Atraccion[2];
-		arrayPromoPorcentual3[0] = Lothlorien;
-		arrayPromoPorcentual3[1] = AbismoDeHelm;
-
-		Promocion Promocion1 = new PromocionPorcentual("PromoPorcentual1", arrayPromoPorcentual, 10);
-		Promocion Promocion2 = new PromocionPorcentual("PromoPorcentual2", arrayPromoPorcentual2, 10);
-		Promocion Promocion3 = new PromocionPorcentual("PromoPorcentual3", arrayPromoPorcentual3, 10);
-
-		sistema.agregarPromocion(Promocion1);
-		sistema.agregarPromocion(Promocion2);
-		sistema.agregarPromocion(Promocion3);
-
-		Atraccion[] resultado = sistema.ofertarMientrasQueHayaOroYtiempo(gime);
-
+/*
 		for (int i = 0; i < resultado.length; i++) {
 			if (resultado[i] != null) {
 
@@ -237,15 +183,6 @@ public class Usuario {
 				System.out.println("-------------------");
 			}
 		}
-
-		gime.imprimirItinerario();
-
-		/*
-		 * boolean acepta = gime.aceptaOferta(); if (acepta == true) {
-		 * System.out.println("Usted a Aceptado la Oferta"); } else if (acepta == false)
-		 * { System.out.println("Usted No aceptó la oferta"); }
-		 */
-
+*/	
 	}
-
 }
