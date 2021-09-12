@@ -222,8 +222,9 @@ public class App {
 
 		int cantSugerenciaAceptada = 0;
 		int cantidadAceptada = 0;
-
-		System.out.println("Bienvenido a nuestra empresa de Turismo. ¡Esperamos que disfrute su estadía!");
+		
+		System.out.println("");
+		System.out.println("Bienvenid@ a nuestra empresa de Turismo. ¡Esperamos que disfrute su estadía!");
 		System.out.println(
 				"El 5% de lo recaudado en la actividad, será donado para la investigación de métodos sofisticados de limpieza e higiene personal");
 		System.out.println(
@@ -626,10 +627,9 @@ public class App {
 		}
 	}
 
-
 	public static void main(String[] args) throws InvalidNumberException, IOException {
 
-		App sistema = new App(1000, 1500, 350);
+		App sistema = new App(10000, 1500, 50);
 		
 		sistema.cargarUsuarios();
 		sistema.cargarAtracciones();

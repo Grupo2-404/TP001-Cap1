@@ -167,6 +167,9 @@ public class Usuario {
 		System.out.println("Muchas gracias por haber elegido nuestros servicios.¡Que tenga un buen día!");
 		System.out.println("");
 		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
 		
 		salida.close();
 	}
