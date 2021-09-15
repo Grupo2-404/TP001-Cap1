@@ -95,12 +95,6 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 
 	public String getNombreAtraccion(Atraccion atraccion) {
 		return atraccion.getNombre();
-		/*
-		 * String imprimir = (("[" + "Nombre de atracción 1: " + atraccionesIncluidas[0]
-		 * + "," + "Nombre de atracción 2: " + atraccionesIncluidas[1] + "]"));
-		 * 
-		 * return imprimir;
-		 */
 	}
 
 	@Override
