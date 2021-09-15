@@ -1,9 +1,6 @@
 package turismoEnLaTierraMedia;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import javax.swing.*;
+import javax.swing.*;	// Necesario para la creación del panel
 
 public class Usuario {
 

@@ -167,7 +167,6 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 
 		Promocion1.imprimirOferta();
 		Mordor.imprimirOferta();
-
 	}
 
 }
