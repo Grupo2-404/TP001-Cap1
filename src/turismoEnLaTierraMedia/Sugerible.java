@@ -16,7 +16,5 @@ public interface Sugerible {
 	public void restarCupo();
 	
 	public void imprimirOferta();
-	
-	//public boolean esPromo();
 
 }

@@ -1,6 +1,8 @@
 package turismoEnLaTierraMedia;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class App {
 	
@@ -195,16 +197,14 @@ public class App {
 	}
 
 	/**
-	 * Tenemos una lista de atracciones y una de promociones. El printWriter va a
-	 * leer la lista de las promociones, las cuales van a ir a un ciclo for, en cada
-	 * ciclo, vamos a comprobar que el usuario tenga oro y tiempo para acceder a la
-	 * atracción, si los tiene, le va a consultar en cada ciclo al usuario si acepta
-	 * la atracción, si no acepta, pasamos al siguiente elemento y volvemos a hacer
-	 * la comprobación y la consulta. Si acepta, vamos a restar 1 cupo en la
-	 * atracción, vamos a guardar en una variable el dato del costo y el tiempo
-	 * necesario para hacer esa atracción, y se los restamos al usuario que la
-	 * aceptó, guardamos la atracción aceptada en un array que vamos a mostrar en el
-	 * retorno.
+	 * Tenemos una lista de atracciones y una de promociones. El printWriter del método cargar promociones, va a leer y cargar la lista de las promociones, lo mismo con las atracciones, las cuales 
+	 * van a estar divididas entre Promociones preferidas y no preferidas, y atracciones aceptadas y no aceptadas, [tenemos en cuenta que esto puede reducirse con la implementación de Sugerible]
+	 * estos arrays van a ir a un ciclo for con el siguiente orden: promociones preferidas, atracciones preferidas, promociones no preferidas y atracciones no preferidas.
+	 * En cada  ciclo, vamos a comprobar que el usuario tenga oro y tiempo para acceder a la atracción, si los tiene, le va a consultar en cada ciclo al usuario si acepta la atracción. 
+	 * Si no acepta, pasamos al siguiente elemento y volvemos a hacer la comprobación y la consulta. Si acepta, vamos a restar 1 cupo en la atracción, vamos a guardar en una variable 
+	 * el dato del costo y el tiempo necesario para hacer esa atracción, y se los restamos al usuario que la aceptó, guardamos la atracción aceptada en un array que vamos a mostrar en el retorno.
+	 * 
+	 * 
 	 * 
 	 * @param usuario
 	 * @return
@@ -327,25 +327,25 @@ public class App {
 				}
 			}
 		}
-		Atraccion[] test = new Atraccion[atracciones.length];
-		Promocion[] test1 = new Promocion[promocionesVigentes.length];
+		/**
+		 *  Creamos 1 array de atracciones y promociones con el tamaño total de atracciones y promociones vigentes, y utilizamos arrayCopy (al cual le tenemos que pasar el array que queremos copiar,
+		 *  desde que posición queremos copiar, el nombre del array en el cual vamos a copiar, desde que posición vamos a copiar los datos del primer array en el segundo, y la longitud de elementos a
+		 *  copiar. Con esto, nos quitamos del medio a los null de los array de atracciones y promociones [podríamos haber realizado un método extra, pero solo iban ser necesarios en este método],
+		 *   
+		 */
+		Atraccion[] arrayAtracciones = new Atraccion[atracciones.length];
+		Promocion[] arrayPromociones = new Promocion[promocionesVigentes.length];
 
-		System.arraycopy(atraccionesPreferidas, 0, test, 0, atraccionesPreferidas.length);
-		System.arraycopy(atraccionesNoPreferidas, 0, test, atraccionesPreferidas.length,
-				atraccionesNoPreferidas.length);
-		atracciones = test;
+		System.arraycopy(atraccionesPreferidas, 0, arrayAtracciones, 0, atraccionesPreferidas.length);
+		System.arraycopy(atraccionesNoPreferidas, 0, arrayAtracciones, atraccionesPreferidas.length,atraccionesNoPreferidas.length);
+		atracciones = arrayAtracciones;
 
-		System.arraycopy(promocionesPreferidas, 0, test1, 0, promocionesPreferidas.length);
-		System.arraycopy(promocionesNoPreferidas, 0, test1, promocionesPreferidas.length,
-				promocionesNoPreferidas.length);
-		promocionesVigentes = test1;
+		System.arraycopy(promocionesPreferidas, 0, arrayPromociones, 0, promocionesPreferidas.length);
+		System.arraycopy(promocionesNoPreferidas, 0, arrayPromociones, promocionesPreferidas.length,promocionesNoPreferidas.length);
+		promocionesVigentes = arrayPromociones;
 
-		for (int i = 0; i < atraccionesAceptadas.length; i++) {
-			if (atraccionesAceptadas[i] != null) {
-			}
-		}
 		usuario.recibirItinerario(itinerario);
-		usuario.imprimirItinerario();
+		this.imprimirItinerario(usuario);
 		return atraccionesAceptadas;
 	}
 
@@ -355,8 +355,6 @@ public class App {
 			if (usuarios[i] != null) {
 				System.out.println("Bienvenid@: " + usuarios[i].getNombre());
 				ofertarMientrasQueHayaOroYtiempo(usuarios[i]);
-				// LLAMAR SALIDA (PASARLE USUARIO[I] COMO PARÁMETRO. CREAR GETITINERARIO PARA
-				// QUE PODAMOS VISUALIZARLO.
 			}
 		}
 	}
@@ -626,6 +624,47 @@ public class App {
 			}
 		}
 	}
+	
+	/** El método almacena el costo y el tiempo de cada atracción o promoción aceptada y los suma hasta terminar de recorrer la lista, mostramos ambos resultados al final de la ejecución.
+	 * Luego, mostramos en consola (y al mismo tiempo almacenamos en el archivo de salida) el nombre de cada atracción o promoción aceptada.
+	 * El DateTimeFormatter y el LocalDateTime se utilizan para generar un nombre de archivo único (en base a la fecha y hora), junto con el nombre de usuario.
+	 * @throws IOException
+	 */
+	public void imprimirItinerario(Usuario usuario) throws IOException {
+
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");  
+		 LocalDateTime now = LocalDateTime.now(); 
+		
+		int costoTotal = 0;
+		double tiempoTotal = 0.0;
+		PrintWriter salida = new PrintWriter(new FileWriter(dtf.format(now) + " " + usuario.getNombre() + " Ticket.out"));
+		
+		salida.println("Ud. ha adquirido: ");
+		System.out.println("Ud. ha adquirido: ");
+		for (int i = 0; i < usuario.getItinerario().length; i++) {
+			if (usuario.getItinerario()[i] != null) {
+				costoTotal += usuario.getItinerario()[i].getCostoDeVisita();
+				tiempoTotal += usuario.getItinerario()[i].getTiempoNecesario();
+				salida.println((i + 1) + ". " + usuario.getItinerario()[i].getNombre().toUpperCase());
+				System.out.println((i + 1) + ". " + usuario.getItinerario()[i].getNombre().toUpperCase());
+			}
+		}
+		salida.println("El costo total de su itinerario es: " + costoTotal + " monedas.");
+		salida.println("El tiempo necesario para realizar su itinerario es: " + tiempoTotal + " horas.");
+		salida.println("Muchas gracias por haber elegido nuestros servicios.¡Esperamos que disfrute su recorrido!");
+		System.out.println("El costo total de su itinerario es: " + costoTotal + " monedas.");
+		System.out.println("La duración total de su itinerario es de: " + tiempoTotal + " horas.");
+		System.out.println("Muchas gracias por haber elegido nuestros servicios.¡Esperamos que disfrute su recorrido!");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		
+		salida.close();
+	}
+	
+	
 
 	public static void main(String[] args) throws InvalidNumberException, IOException {
 
