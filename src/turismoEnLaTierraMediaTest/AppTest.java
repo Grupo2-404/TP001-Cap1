@@ -46,4 +46,8 @@ public class AppTest {
 		assertEquals("Moria", sistema.getAtracciones()[0].getNombre());
 	}
 	
+	
+	
+	
+	
 }

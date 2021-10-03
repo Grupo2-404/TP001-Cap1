@@ -1,9 +1,11 @@
 package turismoEnLaTierraMedia;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
-public abstract class Promocion implements Comparable<Promocion>, Sugerible {
+public abstract class Promocion implements Sugerible { // Comparable<Sugerible>, 
 
 	protected Atraccion[] atraccionesIncluidas;
 	private String nombre;
@@ -26,10 +28,6 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 				atraccionesIncluidas[i].restarCupo();
 			}
 		}
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
 	}
 
 	@Override
@@ -66,18 +64,53 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 		return tiempoTotal;
 	}
 
-	/**
-	 * Se realiza comparación de promociones, los métodos para los cálculos se
-	 * encuentran en la propia clase.
-	 * 
-	 */
 	@Override
-	public int compareTo(Promocion otra) {
+	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> lista) {
 
-		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
-			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+		//for (int i = 0; i < atraccionesIncluidas.length; i++) {
+		
+		for (int i = 0; i < atraccionesIncluidas.length; i++) {	
+			//((Promocion) sugerible) lista.add((Atraccion) sugerible);
+			// ((Promocion) Sugerible).getArrayAtracciones()	
+			// atraccionesAceptadas.add(sugerible.get(i).getArrayAtracciones().get(k);
+			lista.add(atraccionesIncluidas[i]);		
 		}
-		return (this.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
+
+	}
+
+	@Override
+	public boolean esPromocion() {
+		return true;
+	}
+
+	@Override
+	public void imprimirOferta() {
+
+		System.out.println("Usted está accediendo a la promoción: " + this.getNombre().toUpperCase() + ".");
+		System.out.println("Esta promo incluye las siguientes atracciones:");
+
+		for (int i = 0; i < this.getArrayAtracciones().length; i++) {
+			if (getArrayAtracciones()[i] != null) {
+				System.out
+						.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase());
+			}
+		}
+
+		System.out.println("El costo de la promoción es: " + this.getCostoDeVisita() + " monedas.");
+		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
+		System.out.println("-----------------------------------------------------------------");
+	}
+
+	public String getNombreAtraccion(Atraccion atraccion) {
+		return atraccion.getNombre();
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public Atraccion[] getArrayAtracciones() {
+		return this.atraccionesIncluidas;
 	}
 
 	/**
@@ -89,35 +122,24 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 		this.atraccionesIncluidas = atraccionesIncluidas;
 	}
 
-	public Atraccion[] getArrayAtracciones() {
-		return this.atraccionesIncluidas;
-	}
-
-	public String getNombreAtraccion(Atraccion atraccion) {
-		return atraccion.getNombre();
-	}
-
+	/*
+	 // Se realiza comparación de promociones, los métodos para los cálculos se
+	 // encuentran en la propia clase.
+	 // 
+	
 	@Override
-	public void imprimirOferta() {
+	public int compareTo(Sugerible otra) {
 
-		System.out.println("Usted está accediendo a la promoción: " + this.getNombre().toUpperCase() + ".");
-		System.out.println("Esta promo incluye las siguientes atracciones:");
-
-		for (int i = 0; i < this.getArrayAtracciones().length; i++) {
-			if (getArrayAtracciones()[i] != null) {
-				System.out.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase());			
-			}
+		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
+			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
 		}
-
-		System.out.println("El costo de la promoción es: " + this.getCostoDeVisita() + " monedas.");
-		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
-		System.out.println("-----------------------------------------------------------------");
+		return (this.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
 	}
 
-	public static void ordenarPorMayorCostoYtiempo(Sugerible[] arrayPromociones) { // evaluar si pasar a app tanto el de
-																					// atracciones como el de promos.
-		Arrays.sort(arrayPromociones);
+	public static void ordenarPorMayorCostoYtiempo(List<Promocion> arrayPromociones) {
+		Collections.sort(arrayPromociones);
 	}
+	*/
 
 	@Override
 	public int hashCode() {
@@ -139,7 +161,7 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 		Promocion other = (Promocion) obj;
 		return Arrays.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
 	}
-
+	/*
 	public static void main(String[] args) {
 
 		Atraccion Mordor = new Atraccion("Mordor", 12, 3, 10, TipoDeAtraccion.PAISAJE);
@@ -167,6 +189,7 @@ public abstract class Promocion implements Comparable<Promocion>, Sugerible {
 
 		Promocion1.imprimirOferta();
 		Mordor.imprimirOferta();
+		
 	}
-
+*/
 }

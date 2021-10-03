@@ -1,61 +1,33 @@
 package turismoEnLaTierraMedia;
 
 import java.io.*;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class App {
-	
-	private Promocion[] promocionesVigentes;
-	private Atraccion[] atracciones;
-	private Usuario[] usuarios;
-	private int usuarioAgregado = 0;
-	private int atraccionAgregada = 0;
-	private int promocionAgregada = 0;
 
-	public App(int cantidadDeusuarios, int cantidadDeAtracciones, int cantidadDePromociones) {
-		usuarios = new Usuario[cantidadDeusuarios];
-		atracciones = new Atraccion[cantidadDeAtracciones];
-		promocionesVigentes = new Promocion[cantidadDePromociones];
-	}
-
-	public int getCapacidadUsuarios() {
-		return usuarios.length;
-	}
-
-	public int getCapacidadAtracciones() {
-		return atracciones.length;
-	}
-
-	public int getCapacidadPromociones() {
-		return promocionesVigentes.length;
-	}
+	private List<Promocion> promocionesVigentes = new ArrayList<Promocion>();
+	private List<Atraccion> atracciones = new ArrayList<Atraccion>();
+	private List<Usuario> usuarios = new ArrayList<Usuario>();
+	private static List<Sugerible> sugerencias = new ArrayList<Sugerible>();
+	private ComparadorDeSugeribles comparador;
 
 	public void agregarUsuario(Usuario usuario) {
-		this.usuarios[usuarioAgregado] = usuario;
-		usuarioAgregado();
+		this.usuarios.add(usuario);
 	}
 
-	public Usuario[] getUsuarios() {
-		return this.usuarios;
-	}
-
-	private void usuarioAgregado() {
-		usuarioAgregado++;
-	}
+	/*
+	 * public List<Usuario> getUsuarios() { return this.usuarios; }
+	 */
 
 	public void agregarAtraccion(Atraccion atraccion) {
-		this.atracciones[atraccionAgregada] = atraccion;
-		atraccionAgregada();
+		this.atracciones.add(atraccion);
 	}
 
-	private void atraccionAgregada() {
-		this.atraccionAgregada++;
-	}
-
-	public Atraccion[] getAtracciones() {
-		return this.atracciones;
-	}
+	/*
+	 * public List<Atraccion> getAtracciones() { return this.atracciones; }
+	 */
 
 	/**
 	 * Recibimos los parámetros para crear una promo y agregarla al listado de
@@ -67,295 +39,184 @@ public class App {
 	 * @param tipo
 	 */
 	public void agregarPromocion(Promocion promocion) {
-		this.promocionesVigentes[promocionAgregada] = promocion;
-		promocionAgregada();
-	}
-
-	private void promocionAgregada() {
-		this.promocionAgregada++;
-	}
-
-	public Promocion[] getPromociones() {
-		return this.promocionesVigentes;
+		this.promocionesVigentes.add(promocion);
 	}
 
 	/*
-	 * Devuelve un array con atracciones que son del tipo de la atraccion preferida
-	 * del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
-	 * pasada determina la cantidad de atracciones que coinciden con la preferencia
-	 * del usuario. En la segunda pasada carga el array de atracciones preferidas
+	 * public List<Promocion> getPromociones() { return this.promocionesVigentes; }
 	 */
-	public Atraccion[] atraccionesPreferidas(Usuario usuario) {
 
-		int contadorPreferidas = 0;
-		for (int i = 0; i < atracciones.length; i++) {
-			if (atracciones[i] != null) {
-				if (atracciones[i].getTipo() == usuario.getAtraccionPreferida()) {
-					contadorPreferidas++;
-				}
-			}
-		}
-		Atraccion[] atraccionesPreferidas = new Atraccion[contadorPreferidas];
+	
+	/*
+	 // Devuelve un array con atracciones que son del tipo de la atraccion preferida
+	 // del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
+	 // pasada determina la cantidad de atracciones que coinciden con la preferencia
+	 // del usuario. En la segunda pasada carga el array de atracciones preferidas
+	 
+	public void atraccionesPreferidas(Usuario usuario) {
 
-		contadorPreferidas = 0;
+		List<Atraccion> atraccionesPreferidas = new ArrayList<Atraccion>();
 
-		for (int i = 0; i < atracciones.length; i++) {
-			if (atracciones[i] != null) {
-				if (atracciones[i].getTipo() == usuario.getAtraccionPreferida()) {
-					atraccionesPreferidas[contadorPreferidas] = atracciones[i];
-					contadorPreferidas++;
-				}
+		for (int i = 0; i < atracciones.size(); i++) {
+			if (atracciones.get(i).getTipo() == usuario.getAtraccionPreferida()) {
+				atraccionesPreferidas.add(atracciones.get(i));
 			}
 		}
 		Atraccion.ordenarPorMayorCostoYtiempo(atraccionesPreferidas);
-		return atraccionesPreferidas;
+		sugerencias.addAll(atraccionesPreferidas);
 	}
 
-	/*
-	 * devuelve array con atracciones que no son del tipo de la atraccion preferida
-	 * del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
-	 * pasada determina la cantidad de atracciones que no coinciden con la
-	 * preferencia del usuario. En la segunda pasada carga el array de atracciones
-	 * no preferidas
-	 */
-	public Atraccion[] atraccionesNoPreferidas(Usuario usuario) {
+	
+	 // devuelve array con atracciones que no son del tipo de la atraccion preferida
+	 // del usuario, hace dos pasadas sobre el arreglo de atracciones. En la primer
+	 // pasada determina la cantidad de atracciones que no coinciden con la
+	 // preferencia del usuario. En la segunda pasada carga el array de atracciones
+	 // no preferidas
+	
+	public void atraccionesNoPreferidas(Usuario usuario) {
 
-		int contadorNoPreferidas = 0;
+		List<Atraccion> atraccionesNoPreferidas = new ArrayList<Atraccion>();
 
-		for (int i = 0; i < atracciones.length; i++) {
-			if (atracciones[i] != null) {
-				if (atracciones[i].getTipo() != usuario.getAtraccionPreferida()) {
-					contadorNoPreferidas++;
-				}
-			}
-		}
-		Atraccion[] atraccionesNoPreferidas = new Atraccion[contadorNoPreferidas];
-
-		contadorNoPreferidas = 0;
-		for (int i = 0; i < atracciones.length; i++) {
-			if (atracciones[i] != null) {
-				if (atracciones[i].getTipo() != usuario.getAtraccionPreferida()) {
-					atraccionesNoPreferidas[contadorNoPreferidas] = atracciones[i];
-					contadorNoPreferidas++;
-				}
+		for (int i = 0; i < atracciones.size(); i++) {
+			if (atracciones.get(i).getTipo() != usuario.getAtraccionPreferida()) {
+				atraccionesNoPreferidas.add(atracciones.get(i));
 			}
 		}
 		Atraccion.ordenarPorMayorCostoYtiempo(atraccionesNoPreferidas);
-		return atraccionesNoPreferidas;
+		sugerencias.addAll(atraccionesNoPreferidas);
 	}
 
-	public Promocion[] promocionesPreferidas(Usuario usuario) {
+	public void promocionesPreferidas(Usuario usuario) {
 
-		int contadorPreferidas = 0;
-		for (int i = 0; i < promocionesVigentes.length; i++) {
-			if (promocionesVigentes[i] != null) {
-				if (promocionesVigentes[i].getTipo() == usuario.getAtraccionPreferida()) {
-					contadorPreferidas++;
-				}
-			}
-		}
-		Promocion[] promocionesPreferidas = new Promocion[contadorPreferidas];
+		List<Promocion> promocionesPreferidas = new ArrayList<Promocion>();
 
-		contadorPreferidas = 0;
-
-		for (int i = 0; i < promocionesVigentes.length; i++) {
-			if (promocionesVigentes[i] != null) {
-				if (promocionesVigentes[i].getTipo() == usuario.getAtraccionPreferida()) {
-					promocionesPreferidas[contadorPreferidas] = promocionesVigentes[i];
-					contadorPreferidas++;
-				}
+		for (int i = 0; i < promocionesVigentes.size(); i++) {
+			if (promocionesVigentes.get(i).getTipo() == usuario.getAtraccionPreferida()) {
+				promocionesPreferidas.add(promocionesVigentes.get(i));
 			}
 		}
 		Promocion.ordenarPorMayorCostoYtiempo(promocionesPreferidas);
-		return promocionesPreferidas;
+		sugerencias.addAll(promocionesPreferidas);
 	}
 
-	public Promocion[] promocionesNoPreferidas(Usuario usuario) {
+	public void promocionesNoPreferidas(Usuario usuario) {
 
-		int contadorNoPreferidas = 0;
+		List<Promocion> promocionesNoPreferidas = new ArrayList<Promocion>();
 
-		for (int i = 0; i < promocionesVigentes.length; i++) {
-			if (promocionesVigentes[i] != null) {
-				if (promocionesVigentes[i].getTipo() != usuario.getAtraccionPreferida()) {
-					contadorNoPreferidas++;
-				}
-			}
-		}
-		Promocion[] promocionesNoPreferidas = new Promocion[contadorNoPreferidas];
-
-		contadorNoPreferidas = 0;
-		for (int i = 0; i < promocionesVigentes.length; i++) {
-			if (promocionesVigentes[i] != null) {
-				if (promocionesVigentes[i].getTipo() != usuario.getAtraccionPreferida()) {
-					promocionesNoPreferidas[contadorNoPreferidas] = promocionesVigentes[i];
-					contadorNoPreferidas++;
-				}
+		for (int i = 0; i < promocionesVigentes.size(); i++) {
+			if (promocionesVigentes.get(i).getTipo() == usuario.getAtraccionPreferida()) {
+				promocionesNoPreferidas.add(promocionesVigentes.get(i));
 			}
 		}
 		Promocion.ordenarPorMayorCostoYtiempo(promocionesNoPreferidas);
-		return promocionesNoPreferidas;
+		sugerencias.addAll(promocionesNoPreferidas);
 	}
-
+*/
+	
+	public void listaSugeribles() {
+		
+		this.sugerencias.addAll(this.promocionesVigentes);
+		this.sugerencias.addAll(this.atracciones);
+		this.comparador.ordenar(sugerencias);
+	}
+	
 	/**
-	 * Tenemos una lista de atracciones y una de promociones. El printWriter del método cargar promociones, va a leer y cargar la lista de las promociones, lo mismo con las atracciones, las cuales 
-	 * van a estar divididas entre Promociones preferidas y no preferidas, y atracciones aceptadas y no aceptadas, [tenemos en cuenta que esto puede reducirse con la implementación de Sugerible]
-	 * estos arrays van a ir a un ciclo for con el siguiente orden: promociones preferidas, atracciones preferidas, promociones no preferidas y atracciones no preferidas.
-	 * En cada  ciclo, vamos a comprobar que el usuario tenga oro y tiempo para acceder a la atracción, si los tiene, le va a consultar en cada ciclo al usuario si acepta la atracción. 
-	 * Si no acepta, pasamos al siguiente elemento y volvemos a hacer la comprobación y la consulta. Si acepta, vamos a restar 1 cupo en la atracción, vamos a guardar en una variable 
-	 * el dato del costo y el tiempo necesario para hacer esa atracción, y se los restamos al usuario que la aceptó, guardamos la atracción aceptada en un array que vamos a mostrar en el retorno.
-	 * 
-	 * 
+	 * Tenemos una lista de atracciones y una de promociones. El printWriter del
+	 * método cargar promociones, va a leer y cargar la lista de las promociones, lo
+	 * mismo con las atracciones, las cuales van a estar divididas entre Promociones
+	 * preferidas y no preferidas, y atracciones aceptadas y no aceptadas, [tenemos
+	 * en cuenta que esto puede reducirse con la implementación de Sugerible] estos
+	 * arrays van a ir a un ciclo for con el siguiente orden: promociones
+	 * preferidas, atracciones preferidas, promociones no preferidas y atracciones
+	 * no preferidas. En cada ciclo, vamos a comprobar que el usuario tenga oro y
+	 * tiempo para acceder a la atracción, si los tiene, le va a consultar en cada
+	 * ciclo al usuario si acepta la atracción. Si no acepta, pasamos al siguiente
+	 * elemento y volvemos a hacer la comprobación y la consulta. Si acepta, vamos a
+	 * restar 1 cupo en la atracción, vamos a guardar en una variable el dato del
+	 * costo y el tiempo necesario para hacer esa atracción, y se los restamos al
+	 * usuario que la aceptó, guardamos la atracción aceptada en un array que vamos
+	 * a mostrar en el retorno.
 	 * 
 	 * @param usuario
 	 * @return
 	 * @throws IOException
 	 * @throws InvalidNumberException
 	 */
-	public Atraccion[] ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException, InvalidNumberException {
+	public void ofertarMientrasQueHayaOroYtiempo(Usuario usuario) throws IOException, InvalidNumberException {
 
-		Atraccion[] atraccionesAceptadas = new Atraccion[atracciones.length];
-		Atraccion[] atraccionesPreferidas = this.atraccionesPreferidas(usuario);
-		Atraccion[] atraccionesNoPreferidas = this.atraccionesNoPreferidas(usuario);
-		Promocion[] promocionesPreferidas = this.promocionesPreferidas(usuario);
-		Promocion[] promocionesNoPreferidas = this.promocionesNoPreferidas(usuario);
-		Sugerible[] itinerario = new Sugerible[atracciones.length];
+		List<Atraccion> atraccionesAceptadas = new ArrayList<Atraccion>();
 
-		int cantSugerenciaAceptada = 0;
-		int cantidadAceptada = 0;
+		/*
+		this.promocionesPreferidas(usuario);
+		this.atraccionesPreferidas(usuario);
+		this.promocionesNoPreferidas(usuario);
+		this.atraccionesNoPreferidas(usuario);
+*/
 		
+		List<Sugerible> itinerario = new ArrayList<Sugerible>();
+
+		mensajeBienvenida();
+		// intanceOf para comprobar la clase.
+		for (int i = 0; i < sugerencias.size(); i++) {
+
+			if (sugerencias.get(i).esPromocion()) {
+				if (!seRepiteAtraccionEnPromocion((Promocion) sugerencias.get(i), atraccionesAceptadas) // contains
+						&& sugerencias.get(i).getTiempoNecesario() <= usuario.tiempoDisponible
+						&& sugerencias.get(i).getCostoDeVisita() <= usuario.presupuesto
+						&& sugerencias.get(i).comprobarCupo()) {
+
+					aceptaOferta(usuario, atraccionesAceptadas, itinerario, i);
+				}
+			} else {
+				if (!estaAtraccionEnAtracciones((Atraccion) sugerencias.get(i), atraccionesAceptadas)
+						&& sugerencias.get(i).getTiempoNecesario() <= usuario.tiempoDisponible
+						&& sugerencias.get(i).getCostoDeVisita() <= usuario.presupuesto
+						&& sugerencias.get(i).comprobarCupo()) {
+
+					aceptaOferta(usuario, atraccionesAceptadas, itinerario, i);
+				}
+			}
+		}
+		usuario.recibirItinerario(itinerario);	
+		this.imprimirItinerario(usuario);
+	}
+	// atraccionesAceptadas.add(sugerencias.get(i);
+			// crear método agregarAtracción, que agregue cada atracción al array, entonces
+			// solo llamamos a ese método y no
+			// tendríamos la necesidad de ver como agregarlos desde acá con add o addAll, no
+			// importaría si fuera una promo
+			// o una atracción, el mismo sugerible se encargaría de llamar al método
+			// correspondiente dependiendo que esté
+			// viendo en la posición i. Algo así como:
+			// sugerencias.get(i).agregarAtraccion();
+
+	private void mensajeBienvenida() {
 		System.out.println("");
 		System.out.println("Bienvenid@ a nuestra empresa de Turismo. ¡Esperamos que disfrute su estadía!");
 		System.out.println(
 				"El 5% de lo recaudado en la actividad, será donado para la investigación de métodos sofisticados de limpieza e higiene personal");
 		System.out.println(
 				"-------------------------------------------------------------------------------------------------------------------------------");
+	}
 
-		for (int i = 0; i < promocionesPreferidas.length; i++) {
-			// Antes de mostrarle la sugerencia al usuario se comprueba que tenga tiempo y
-			// dinero, que las atracciones tengan cupo, y que la atracción no haya sido
-			// mostrada anteriormente.
-			if (!seRepiteAtraccionEnPromocion(promocionesPreferidas[i], atraccionesAceptadas)
-					&& promocionesPreferidas[i].getTiempoNecesario() <= usuario.tiempoDisponible
-					&& promocionesPreferidas[i].getCostoDeVisita() <= usuario.presupuesto
-					&& promocionesPreferidas[i].comprobarCupo()) {
-
-				if (usuario.aceptaOferta(promocionesPreferidas[i]) == true) {
-					promocionesPreferidas[i].restarCupo();
-					usuario.aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(promocionesPreferidas[i]);
-					itinerario[cantSugerenciaAceptada] = promocionesPreferidas[i];
-					cantSugerenciaAceptada++;
-					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
-					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
-					System.out.println("------------------------------------------------------------");
-
-					for (int k = 0; k < promocionesPreferidas[i].getArrayAtracciones().length; k++) {
-
-						atraccionesAceptadas[cantidadAceptada] = promocionesPreferidas[i].getArrayAtracciones()[k];
-						cantidadAceptada++;
-					}
-				}
-			}
+	private void aceptaOferta(Usuario usuario, List<Atraccion> atraccionesAceptadas, List<Sugerible> itinerario,
+			int i) {
+		if (usuario.aceptaOferta(sugerencias.get(i))) {
+			sugerencias.get(i).restarCupo();
+			usuario.aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(sugerencias.get(i));
+			itinerario.add(sugerencias.get(i));
+			System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
+			System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
+			System.out.println("------------------------------------------------------------");
+			sugerencias.get(i).agregarAtraccion(sugerencias.get(i), atraccionesAceptadas);
 		}
-
-		for (int i = 0; i < atraccionesPreferidas.length; i++) {
-
-			if (!estaAtraccionEnAtracciones(atraccionesPreferidas[i], atraccionesAceptadas)
-					&& atraccionesPreferidas[i].tiempoNecesario <= usuario.tiempoDisponible
-					&& atraccionesPreferidas[i].costoDeVisita <= usuario.presupuesto
-					&& atraccionesPreferidas[i].comprobarCupo()) {
-
-				if (usuario.aceptaOferta(atraccionesPreferidas[i]) == true) {
-					atraccionesPreferidas[i].restarCupo();
-					usuario.aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(atraccionesPreferidas[i]);
-					itinerario[cantSugerenciaAceptada] = atraccionesPreferidas[i];
-					cantSugerenciaAceptada++;
-					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
-					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
-					System.out.println("------------------------------------------------------------");
-					atraccionesAceptadas[cantidadAceptada] = atraccionesPreferidas[i];
-					cantidadAceptada++;
-				}
-			}
-		}
-
-		for (int i = 0; i < promocionesNoPreferidas.length; i++) {
-
-			// Antes de mostrarle la sugerencia al usuario se comprueba que tenga tiempo y
-			// dinero, que las atracciones tengan cupo, y que la atracción no haya sido
-			// mostrada anteriormente.
-			if (!seRepiteAtraccionEnPromocion(promocionesNoPreferidas[i], atraccionesAceptadas)
-					&& promocionesNoPreferidas[i].getTiempoNecesario() <= usuario.tiempoDisponible
-					&& promocionesNoPreferidas[i].getCostoDeVisita() <= usuario.presupuesto
-					&& promocionesNoPreferidas[i].comprobarCupo()) {
-
-				if (usuario.aceptaOferta(promocionesNoPreferidas[i]) == true) {
-					promocionesNoPreferidas[i].restarCupo();
-					usuario.aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(promocionesNoPreferidas[i]);
-					itinerario[cantSugerenciaAceptada] = promocionesNoPreferidas[i];
-					cantSugerenciaAceptada++;
-					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto());
-					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
-					System.out.println("------------------------------------------------------------");
-
-					for (int k = 0; k < promocionesNoPreferidas[i].getArrayAtracciones().length; k++) {
-
-						atraccionesAceptadas[cantidadAceptada] = promocionesNoPreferidas[i].getArrayAtracciones()[k];
-						cantidadAceptada++;
-					}
-				}
-			}
-		}
-
-		for (int i = 0; i < atraccionesNoPreferidas.length; i++) {
-
-			if (!estaAtraccionEnAtracciones(atraccionesNoPreferidas[i], atraccionesAceptadas)
-					&& atraccionesNoPreferidas[i].tiempoNecesario <= usuario.tiempoDisponible
-					&& atraccionesNoPreferidas[i].costoDeVisita <= usuario.presupuesto
-					&& atraccionesNoPreferidas[i].comprobarCupo()) {
-
-				if (usuario.aceptaOferta(atraccionesNoPreferidas[i]) == true) {
-					atraccionesNoPreferidas[i].restarCupo();
-					usuario.aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(atraccionesNoPreferidas[i]);
-					itinerario[cantSugerenciaAceptada] = atraccionesNoPreferidas[i];
-					cantSugerenciaAceptada++;
-					System.out.println("Su presupuesto actual es de: " + usuario.getPresupuesto()); // CREAR MÉTODO E
-																									// INVOCARLO.
-					System.out.println("Su tiempo disponible es de: " + usuario.getTiempoDisponible());
-					System.out.println("------------------------------------------------------------");
-					atraccionesAceptadas[cantidadAceptada] = atraccionesNoPreferidas[i];
-					cantidadAceptada++;
-				}
-			}
-		}
-		/**
-		 *  Creamos 1 array de atracciones y promociones con el tamaño total de atracciones y promociones vigentes, y utilizamos arrayCopy (al cual le tenemos que pasar el array que queremos copiar,
-		 *  desde que posición queremos copiar, el nombre del array en el cual vamos a copiar, desde que posición vamos a copiar los datos del primer array en el segundo, y la longitud de elementos a
-		 *  copiar. Con esto, nos quitamos del medio a los null de los array de atracciones y promociones [podríamos haber realizado un método extra, pero solo iban ser necesarios en este método],
-		 *   
-		 */
-		Atraccion[] arrayAtracciones = new Atraccion[atracciones.length];
-		Promocion[] arrayPromociones = new Promocion[promocionesVigentes.length];
-
-		System.arraycopy(atraccionesPreferidas, 0, arrayAtracciones, 0, atraccionesPreferidas.length);
-		System.arraycopy(atraccionesNoPreferidas, 0, arrayAtracciones, atraccionesPreferidas.length,atraccionesNoPreferidas.length);
-		atracciones = arrayAtracciones;
-
-		System.arraycopy(promocionesPreferidas, 0, arrayPromociones, 0, promocionesPreferidas.length);
-		System.arraycopy(promocionesNoPreferidas, 0, arrayPromociones, promocionesPreferidas.length,promocionesNoPreferidas.length);
-		promocionesVigentes = arrayPromociones;
-
-		usuario.recibirItinerario(itinerario);
-		this.imprimirItinerario(usuario);
-		return atraccionesAceptadas;
 	}
 
 	public void ofertarMientrasQueHayaOroYtiempoAtodosLosUsuarios() throws IOException, InvalidNumberException {
 
-		for (int i = 0; i < usuarios.length; i++) {
-			if (usuarios[i] != null) {
-				System.out.println("Bienvenid@: " + usuarios[i].getNombre());
-				ofertarMientrasQueHayaOroYtiempo(usuarios[i]);
-			}
+		for (int i = 0; i < usuarios.size(); i++) {
+			System.out.println("Bienvenid@: " + usuarios.get(i).getNombre());
+			ofertarMientrasQueHayaOroYtiempo(usuarios.get(i));
 		}
 	}
 
@@ -366,22 +227,22 @@ public class App {
 	 * @param unaAtraccion
 	 * @return
 	 */
-	public boolean estaAtraccionEnAtracciones(Atraccion atraccion, Atraccion[] atraccionesArray) {
-		for (Atraccion Atr : atraccionesArray) {
-			if (Atr != null) {
+	public boolean estaAtraccionEnAtracciones(Atraccion atraccion, List<Atraccion> atraccionesAceptadas) {
+
+		for (Atraccion Atr : atraccionesAceptadas) {
+	
 				if (Atr.equals(atraccion)) {
-					return true;
-				}
+					return true;		
 			}
 		}
 		return false;
 	}
 
-	public boolean seRepiteAtraccionEnPromocion(Promocion promocion, Atraccion[] atraccionesArray) {
+	public boolean seRepiteAtraccionEnPromocion(Promocion promocion, List<Atraccion> atraccionesAceptadas) {
 
 		for (Atraccion unaAtraccion : promocion.getArrayAtracciones()) { // atracciones incluídas.
 
-			if (estaAtraccionEnAtracciones(unaAtraccion, atraccionesArray)) {
+			if (estaAtraccionEnAtracciones(unaAtraccion, atraccionesAceptadas)) {
 				return true;
 			}
 		}
@@ -492,7 +353,7 @@ public class App {
 		} finally {
 			try {
 				System.out.println("-------------------------------------------------------");
-				if (fr != null) {
+				if (fr != null) { // Si fr es distinto de null, o sea, si existe, vamos a cerrar el archivo.
 					fr.close();
 				}
 			} catch (Exception e1) {
@@ -533,12 +394,9 @@ public class App {
 
 						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
 						for (int i = 0; i < listaAtracciones.length; i++) {
-							for (int k = 0; k < atracciones.length; k++) {
-								if (atracciones[k] != null) {
-									if (listaAtracciones[i].equals(atracciones[k].getNombre())) {
-										atraccionesIncluidas[i] = atracciones[k];
-
-									}
+							for (int k = 0; k < atracciones.size(); k++) {
+								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
+									atraccionesIncluidas[i] = atracciones.get(k);
 								}
 							}
 						}
@@ -562,13 +420,10 @@ public class App {
 
 						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
 						for (int i = 0; i < listaAtracciones.length; i++) {
-							for (int k = 0; k < atracciones.length; k++) {
-								if (atracciones[k] != null) {
+							for (int k = 0; k < atracciones.size(); k++) {
+								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
+									atraccionesIncluidas[i] = atracciones.get(k);
 
-									if (listaAtracciones[i].equals(atracciones[k].getNombre())) {
-										atraccionesIncluidas[i] = atracciones[k];
-
-									}
 								}
 							}
 						}
@@ -582,17 +437,13 @@ public class App {
 						String[] listaAtracciones = new String[archivoPromociones.length - 2];
 						for (int i = 2, k = 0; i < archivoPromociones.length; i++, k++) {
 							listaAtracciones[k] = archivoPromociones[i];
-
 						}
 
 						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
 						for (int i = 0; i < listaAtracciones.length; i++) {
-							for (int k = 0; k < atracciones.length; k++) {
-								if (atracciones[k] != null) {
-									if (listaAtracciones[i].equals(atracciones[k].getNombre())) {
-										atraccionesIncluidas[i] = atracciones[k];
-
-									}
+							for (int k = 0; k < atracciones.size(); k++) {
+								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
+									atraccionesIncluidas[i] = atracciones.get(k);
 								}
 							}
 						}
@@ -624,29 +475,36 @@ public class App {
 			}
 		}
 	}
-	
-	/** El método almacena el costo y el tiempo de cada atracción o promoción aceptada y los suma hasta terminar de recorrer la lista, mostramos ambos resultados al final de la ejecución.
-	 * Luego, mostramos en consola (y al mismo tiempo almacenamos en el archivo de salida) el nombre de cada atracción o promoción aceptada.
-	 * El DateTimeFormatter y el LocalDateTime se utilizan para generar un nombre de archivo único (en base a la fecha y hora), junto con el nombre de usuario.
+
+	/**
+	 * El método almacena el costo y el tiempo de cada atracción o promoción
+	 * aceptada y los suma hasta terminar de recorrer la lista, mostramos ambos
+	 * resultados al final de la ejecución. Luego, mostramos en consola (y al mismo
+	 * tiempo almacenamos en el archivo de salida) el nombre de cada atracción o
+	 * promoción aceptada. El DateTimeFormatter y el LocalDateTime se utilizan para
+	 * generar un nombre de archivo único (en base a la fecha y hora), junto con el
+	 * nombre de usuario.
+	 * 
 	 * @throws IOException
 	 */
 	public void imprimirItinerario(Usuario usuario) throws IOException {
 
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");  
-		 LocalDateTime now = LocalDateTime.now(); 
-		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+		LocalDateTime now = LocalDateTime.now();
+
 		int costoTotal = 0;
 		double tiempoTotal = 0.0;
-		PrintWriter salida = new PrintWriter(new FileWriter(dtf.format(now) + " " + usuario.getNombre() + " Ticket.out"));
-		
+		PrintWriter salida = new PrintWriter(
+				new FileWriter(dtf.format(now) + " " + usuario.getNombre() + " Ticket.out"));
+
 		salida.println("Ud. ha adquirido: ");
 		System.out.println("Ud. ha adquirido: ");
-		for (int i = 0; i < usuario.getItinerario().length; i++) {
-			if (usuario.getItinerario()[i] != null) {
-				costoTotal += usuario.getItinerario()[i].getCostoDeVisita();
-				tiempoTotal += usuario.getItinerario()[i].getTiempoNecesario();
-				salida.println((i + 1) + ". " + usuario.getItinerario()[i].getNombre().toUpperCase());
-				System.out.println((i + 1) + ". " + usuario.getItinerario()[i].getNombre().toUpperCase());
+		for (int i = 0; i < usuario.getItinerario().size(); i++) {
+			if (usuario.getItinerario().get(i) != null) {
+				costoTotal += usuario.getItinerario().get(i).getCostoDeVisita();
+				tiempoTotal += usuario.getItinerario().get(i).getTiempoNecesario();
+				salida.println((i + 1) + ". " + usuario.getItinerario().get(i).getNombre().toUpperCase());
+				System.out.println((i + 1) + ". " + usuario.getItinerario().get(i).getNombre().toUpperCase());
 			}
 		}
 		salida.println("El costo total de su itinerario es: " + costoTotal + " monedas.");
@@ -660,20 +518,29 @@ public class App {
 		System.out.println("");
 		System.out.println("");
 		System.out.println("");
-		
+
 		salida.close();
 	}
-	
-	
 
 	public static void main(String[] args) throws InvalidNumberException, IOException {
 
-		App sistema = new App(10000, 1500, 50);
-		
+		App sistema = new App();
+		// Usuario usuario = new Usuario("Axel", TipoDeAtraccion.AVENTURA, 10000,
+		// 12.00);
+
 		sistema.cargarUsuarios();
 		sistema.cargarAtracciones();
 		sistema.cargarPromociones();
+		// sistema.atraccionesPreferidas(usuario);
+		// sistema.atraccionesNoPreferidas(usuario);
 
+		/*
+		 * for (int i = 0; i < sugerencias.size(); i++) {
+		 * System.out.println(sugerencias.get(i).getNombre().toUpperCase());
+		 * 
+		 * //System.out.println((i + 1) + ". " +
+		 * this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase()); }
+		 */
 		sistema.ofertarMientrasQueHayaOroYtiempoAtodosLosUsuarios();
 
 	}

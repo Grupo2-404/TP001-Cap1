@@ -1,9 +1,9 @@
 package turismoEnLaTierraMedia;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
-public class Atraccion implements Comparable<Atraccion>, Sugerible {
+public class Atraccion implements  Sugerible { // Comparable<Atraccion>,
 
 	private String nombre;
 	protected int costoDeVisita;
@@ -50,7 +50,17 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 	public void restarCupo() {
 		this.cupoDePersonas--;
 	}
-
+	
+	@Override
+	public boolean esPromocion() {
+		return false;
+	}
+	
+	@Override 
+	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> lista) {
+		lista.add((Atraccion) sugerible);
+	}
+/*
 	@Override
 	public int compareTo(Atraccion otra) {
 
@@ -59,6 +69,7 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 		}
 		return (this.costoDeVisita - otra.costoDeVisita) * -1;
 	}
+	*/
 	
 	@Override
 	public void imprimirOferta() {
@@ -69,14 +80,14 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 		System.out.println("-----------------------------------------------------------------");
 	}
 	
-	
-
-	public static void ordenarPorMayorCostoYtiempo(Sugerible[] arrayAtracciones) {		// Revisar si lo pasamos a App.
+	/*
+	public static void ordenarPorMayorCostoYtiempo(List<Atraccion> arrayAtracciones) {		
 		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente
 		// debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
-		Arrays.sort(arrayAtracciones);
+		Collections.sort(arrayAtracciones);
 	}
-
+*/
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(costoDeVisita, nombre, tiempoNecesario, tipo, usuario);
@@ -94,9 +105,6 @@ public class Atraccion implements Comparable<Atraccion>, Sugerible {
 		return costoDeVisita == other.costoDeVisita && Objects.equals(nombre, other.nombre)
 				&& Double.doubleToLongBits(tiempoNecesario) == Double.doubleToLongBits(other.tiempoNecesario)
 				&& tipo == other.tipo && Objects.equals(usuario, other.usuario);
-	}
-	
-	public static void main(String[] args) throws Exception{
 	}
 
 }

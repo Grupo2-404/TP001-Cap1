@@ -1,5 +1,7 @@
 package turismoEnLaTierraMedia;
 
+import java.util.List;
+
 import javax.swing.*;	// Necesario para la creación del panel
 
 public class Usuario {
@@ -8,10 +10,9 @@ public class Usuario {
 	protected int presupuesto;
 	protected double tiempoDisponible;
 	private TipoDeAtraccion tipoAtracciónPreferida;
-	private Sugerible[] itinerario;
+	private List<Sugerible> itinerario;
 
-	public Usuario(String nombre, TipoDeAtraccion atracciónPreferida, int presupuesto, double tiempoDisponible)
-			throws InvalidNumberException {
+	public Usuario(String nombre, TipoDeAtraccion atracciónPreferida, int presupuesto, double tiempoDisponible) {
 		this.nombre = nombre;
 		this.tipoAtracciónPreferida = atracciónPreferida;
 		this.presupuesto = presupuesto;
@@ -34,11 +35,14 @@ public class Usuario {
 		return this.tiempoDisponible;
 	}
 	
-	public Sugerible[] getItinerario() {
+	public List<Sugerible> getItinerario() {
 		return this.itinerario;
 	}
-
 	
+	public void recibirItinerario(List<Sugerible> itinerario) {
+		this.itinerario = itinerario;
+	}
+
 	public void aceptoOfertaSugeridaYseDescontoTiempoYpresupuesto(Sugerible sugerencia) {
 
 		this.tiempoDisponible -= sugerencia.getTiempoNecesario();
@@ -96,8 +100,7 @@ public class Usuario {
 
 		int seleccion = JOptionPane.showOptionDialog(null, "¿Acepta la compra?", "Seleccione opcion",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, // null para icono por defecto.
-				null, new Object[] { "Si", "No" }, 
-				null);
+				null, new Object[] { "Si", "No" }, null);
 
 		if (seleccion == 0) {
 			System.out.println("Si");
@@ -111,7 +114,6 @@ public class Usuario {
 		JOptionPane.showMessageDialog(null, "Usted ha aceptado la oferta");
 
 		System.out.println("Usted ha aceptado la oferta");
-
 	}
 
 	public void avisoCompraNoAceptada() {
@@ -121,8 +123,4 @@ public class Usuario {
 
 	}
 	
-	public void recibirItinerario(Sugerible[] itinerario) {
-		this.itinerario = itinerario;
-	}
-
 }

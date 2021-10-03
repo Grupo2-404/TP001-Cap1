@@ -8,7 +8,6 @@ public class PromocionAbsoluta extends Promocion {
 		super(nombre, arrayAtracciones);
 		this.MONEDAS = monedas;
 	}
-
 	
 	/** En este método, tenemos 2 ideas distintas sobre como debería funcionar, por lo tanto, dejamos ambos escritos, uno funcionando actualmente, y el otro comentado.
 	 *  Por un lado, entendemos que las promociones absolutas obtienen un descuento a partir de una cantidad de monedas que ingresa desde el archivo (caso funcionando actualmente).

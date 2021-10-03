@@ -1,6 +1,8 @@
 package turismoEnLaTierraMedia;
 
-public interface Sugerible {
+import java.util.List;
+
+public interface Sugerible  {
 	
 	public String getNombre();
 	
@@ -16,5 +18,9 @@ public interface Sugerible {
 	public void restarCupo();
 	
 	public void imprimirOferta();
+	
+	public boolean esPromocion();
+	
+	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> atraccionesAceptadas);
 
 }
