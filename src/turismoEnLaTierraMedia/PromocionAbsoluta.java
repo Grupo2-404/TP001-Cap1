@@ -1,11 +1,13 @@
 package turismoEnLaTierraMedia;
 
+import java.util.List;
+
 public class PromocionAbsoluta extends Promocion {
 
 	private final int MONEDAS;
 
-	public PromocionAbsoluta(String nombre, Atraccion[] arrayAtracciones, int monedas) {
-		super(nombre, arrayAtracciones);
+	public PromocionAbsoluta(String nombre, List<Atraccion> listaAtracciones, int monedas) {
+		super(nombre, listaAtracciones);
 		this.MONEDAS = monedas;
 	}
 	
@@ -19,8 +21,8 @@ public class PromocionAbsoluta extends Promocion {
 		
 		int costoTotal = 0;
 		
-		for (int i = 0; i < super.atraccionesIncluidas.length; i++) {
-			costoTotal += atraccionesIncluidas[i].getCostoDeVisita();
+		for (int i = 0; i < super.atraccionesIncluidas.size(); i++) {
+			costoTotal += atraccionesIncluidas.get(i).getCostoDeVisita();
 		}
 		return costoTotal - MONEDAS;
 		// return MONEDAS;

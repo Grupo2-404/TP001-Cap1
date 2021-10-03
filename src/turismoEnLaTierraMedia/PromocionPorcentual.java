@@ -1,11 +1,13 @@
 package turismoEnLaTierraMedia;
 
+import java.util.List;
+
 public class PromocionPorcentual extends Promocion {
 
 	private final double PORCENTAJE_DESCUENTO;
 
-	public PromocionPorcentual(String nombre, Atraccion[] arrayAtracciones, double porcentaje) {
-		super(nombre, arrayAtracciones);
+	public PromocionPorcentual(String nombre, List<Atraccion> listaAtracciones, double porcentaje) {
+		super(nombre, listaAtracciones);
 		this.PORCENTAJE_DESCUENTO = porcentaje;
 	}
 
@@ -18,11 +20,9 @@ public class PromocionPorcentual extends Promocion {
 
 		double costoTotal = 0;
 
-		for (int i = 0; i < super.atraccionesIncluidas.length; i++) {
-			if (atraccionesIncluidas[i] != null) {
-				costoTotal += atraccionesIncluidas[i].getCostoDeVisita();
+		for (int i = 0; i < super.atraccionesIncluidas.size(); i++) {
+				costoTotal += atraccionesIncluidas.get(i).getCostoDeVisita();
 			}
-		}
 		return (int) Math.round(costoTotal * (1 - PORCENTAJE_DESCUENTO / 100));
 	}
 

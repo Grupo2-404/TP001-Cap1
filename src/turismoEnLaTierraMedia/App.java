@@ -125,6 +125,7 @@ public class App {
 		for (int i = 0; i < usuarios.size(); i++) {
 			System.out.println("Bienvenid@: " + usuarios.get(i).getNombre());
 			ofertarMientrasQueHayaOroYtiempo(usuarios.get(i));
+			sugerencias.clear();
 		}
 	}
 
@@ -300,11 +301,11 @@ public class App {
 							listaAtracciones[k] = archivoPromociones[i];
 						}
 
-						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
+						List <Atraccion> atraccionesIncluidas = new ArrayList<Atraccion>();
 						for (int i = 0; i < listaAtracciones.length; i++) {
 							for (int k = 0; k < atracciones.size(); k++) {
 								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
-									atraccionesIncluidas[i] = atracciones.get(k);
+									atraccionesIncluidas.add(atracciones.get(k));
 								}
 							}
 						}
@@ -326,11 +327,11 @@ public class App {
 							listaAtracciones[k] = archivoPromociones[i];
 						}
 
-						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
+						List <Atraccion> atraccionesIncluidas = new ArrayList<Atraccion>();
 						for (int i = 0; i < listaAtracciones.length; i++) {
 							for (int k = 0; k < atracciones.size(); k++) {
 								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
-									atraccionesIncluidas[i] = atracciones.get(k);
+									atraccionesIncluidas.add(atracciones.get(k));
 
 								}
 							}
@@ -347,11 +348,11 @@ public class App {
 							listaAtracciones[k] = archivoPromociones[i];
 						}
 
-						Atraccion[] atraccionesIncluidas = new Atraccion[listaAtracciones.length];
+						List <Atraccion> atraccionesIncluidas = new ArrayList<Atraccion>();
 						for (int i = 0; i < listaAtracciones.length; i++) {
 							for (int k = 0; k < atracciones.size(); k++) {
 								if (listaAtracciones[i].equals(atracciones.get(k).getNombre())) {
-									atraccionesIncluidas[i] = atracciones.get(k);
+									atraccionesIncluidas.add(atracciones.get(k));
 								}
 							}
 						}

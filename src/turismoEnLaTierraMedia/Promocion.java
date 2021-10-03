@@ -1,17 +1,17 @@
 package turismoEnLaTierraMedia;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class Promocion implements Sugerible {
-
-	protected Atraccion[] atraccionesIncluidas;
+	
+	protected List<Atraccion> atraccionesIncluidas = new ArrayList<Atraccion>();
 	private String nombre;
 
-	public Promocion(String nombreDePromocion, Atraccion[] arrayAtracciones) {
+	public Promocion(String nombreDePromocion, List<Atraccion> listaAtracciones) {
 		this.setNombre(nombreDePromocion);
-		this.setArrayAtracciones(arrayAtracciones);
+		this.setArrayAtracciones(listaAtracciones);
 	}
 
 	@Override
@@ -22,21 +22,17 @@ public abstract class Promocion implements Sugerible {
 	@Override
 	public void restarCupo() {
 
-		for (int i = 0; i < atraccionesIncluidas.length; i++) {
-			if (atraccionesIncluidas[i] != null) {
-				atraccionesIncluidas[i].restarCupo();
-			}
+		for (int i = 0; i < atraccionesIncluidas.size(); i++) {
+				atraccionesIncluidas.get(i).restarCupo();
 		}
 	}
 
 	@Override
 	public boolean comprobarCupo() {
 
-		for (int i = 0; i < atraccionesIncluidas.length; i++) {
-			if (atraccionesIncluidas[i] != null) {
-				if (!atraccionesIncluidas[i].comprobarCupo()) {
+		for (int i = 0; i < atraccionesIncluidas.size(); i++) {
+				if (!atraccionesIncluidas.get(i).comprobarCupo()) {
 					return false;
-				}
 			}
 		}
 		return true;
@@ -48,26 +44,23 @@ public abstract class Promocion implements Sugerible {
 	 */
 	@Override
 	public TipoDeAtraccion getTipo() {
-		return this.atraccionesIncluidas[0].getTipo();
+		return this.atraccionesIncluidas.get(0).getTipo();
 	}
 
 	@Override
 	public double getTiempoNecesario() {
 		double tiempoTotal = 0;
 
-		for (int i = 0; i < atraccionesIncluidas.length; i++) {
-			if (atraccionesIncluidas[i] != null) {
-				tiempoTotal += atraccionesIncluidas[i].getTiempoNecesario();
-			}
+		for (int i = 0; i < atraccionesIncluidas.size(); i++) {
+				tiempoTotal += atraccionesIncluidas.get(i).getTiempoNecesario();
 		}
 		return tiempoTotal;
 	}
 
 	@Override
 	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> lista) {
-		
-		for (int i = 0; i < atraccionesIncluidas.length; i++) {	
-			lista.add(atraccionesIncluidas[i]);		
+		for (int i = 0; i < atraccionesIncluidas.size(); i++) {	
+			lista.add(atraccionesIncluidas.get(i));		
 		}
 	}
 
@@ -82,11 +75,9 @@ public abstract class Promocion implements Sugerible {
 		System.out.println("Usted está accediendo a la promoción: " + this.getNombre().toUpperCase() + ".");
 		System.out.println("Esta promo incluye las siguientes atracciones:");
 
-		for (int i = 0; i < this.getArrayAtracciones().length; i++) {
-			if (getArrayAtracciones()[i] != null) {
-				System.out.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase());
+		for (int i = 0; i < this.getArrayAtracciones().size(); i++) {
+				System.out.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones().get(i)).toUpperCase());
 			}
-		}
 		System.out.println("El costo de la promoción es: " + this.getCostoDeVisita() + " monedas.");
 		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
 		System.out.println("-----------------------------------------------------------------");
@@ -100,7 +91,7 @@ public abstract class Promocion implements Sugerible {
 		this.nombre = nombre;
 	}
 
-	public Atraccion[] getArrayAtracciones() {
+	public List<Atraccion> getArrayAtracciones() {
 		return this.atraccionesIncluidas;
 	}
 
@@ -109,17 +100,13 @@ public abstract class Promocion implements Sugerible {
 	 * 
 	 * @param atraccionesIncluidas
 	 */
-	public void setArrayAtracciones(Atraccion[] atraccionesIncluidas) {
+	public void setArrayAtracciones(List<Atraccion>atraccionesIncluidas) {
 		this.atraccionesIncluidas = atraccionesIncluidas;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(atraccionesIncluidas);
-		result = prime * result + Objects.hash(nombre);
-		return result;
+		return Objects.hash(atraccionesIncluidas, nombre);
 	}
 
 	@Override
@@ -131,9 +118,9 @@ public abstract class Promocion implements Sugerible {
 		if (getClass() != obj.getClass())
 			return false;
 		Promocion other = (Promocion) obj;
-		return Arrays.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
+		return Objects.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
 	}
-	
+
 	/*
 	public static void main(String[] args) {
 
@@ -161,8 +148,7 @@ public abstract class Promocion implements Sugerible {
 		Promocion Promocion3 = new PromocionPorcentual("PromoPorcentual3", arrayPromoPorcentual3, 10);
 
 		Promocion1.imprimirOferta();
-		Mordor.imprimirOferta();
-		
+		Mordor.imprimirOferta();	
 	}
 */
 }
