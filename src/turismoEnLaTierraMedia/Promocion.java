@@ -1,11 +1,10 @@
 package turismoEnLaTierraMedia;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class Promocion implements Sugerible { // Comparable<Sugerible>, 
+public abstract class Promocion implements Sugerible {
 
 	protected Atraccion[] atraccionesIncluidas;
 	private String nombre;
@@ -66,16 +65,10 @@ public abstract class Promocion implements Sugerible { // Comparable<Sugerible>,
 
 	@Override
 	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> lista) {
-
-		//for (int i = 0; i < atraccionesIncluidas.length; i++) {
 		
 		for (int i = 0; i < atraccionesIncluidas.length; i++) {	
-			//((Promocion) sugerible) lista.add((Atraccion) sugerible);
-			// ((Promocion) Sugerible).getArrayAtracciones()	
-			// atraccionesAceptadas.add(sugerible.get(i).getArrayAtracciones().get(k);
 			lista.add(atraccionesIncluidas[i]);		
 		}
-
 	}
 
 	@Override
@@ -91,11 +84,9 @@ public abstract class Promocion implements Sugerible { // Comparable<Sugerible>,
 
 		for (int i = 0; i < this.getArrayAtracciones().length; i++) {
 			if (getArrayAtracciones()[i] != null) {
-				System.out
-						.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase());
+				System.out.println((i + 1) + ". " + this.getNombreAtraccion(this.getArrayAtracciones()[i]).toUpperCase());
 			}
 		}
-
 		System.out.println("El costo de la promoción es: " + this.getCostoDeVisita() + " monedas.");
 		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
 		System.out.println("-----------------------------------------------------------------");
@@ -122,25 +113,6 @@ public abstract class Promocion implements Sugerible { // Comparable<Sugerible>,
 		this.atraccionesIncluidas = atraccionesIncluidas;
 	}
 
-	/*
-	 // Se realiza comparación de promociones, los métodos para los cálculos se
-	 // encuentran en la propia clase.
-	 // 
-	
-	@Override
-	public int compareTo(Sugerible otra) {
-
-		if (this.getCostoDeVisita() == otra.getCostoDeVisita()) {
-			return (int) (this.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
-		}
-		return (this.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
-	}
-
-	public static void ordenarPorMayorCostoYtiempo(List<Promocion> arrayPromociones) {
-		Collections.sort(arrayPromociones);
-	}
-	*/
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -161,6 +133,7 @@ public abstract class Promocion implements Sugerible { // Comparable<Sugerible>,
 		Promocion other = (Promocion) obj;
 		return Arrays.equals(atraccionesIncluidas, other.atraccionesIncluidas) && Objects.equals(nombre, other.nombre);
 	}
+	
 	/*
 	public static void main(String[] args) {
 

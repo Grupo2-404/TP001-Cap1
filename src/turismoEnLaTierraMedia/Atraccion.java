@@ -3,7 +3,7 @@ package turismoEnLaTierraMedia;
 import java.util.List;
 import java.util.Objects;
 
-public class Atraccion implements  Sugerible { // Comparable<Atraccion>,
+public class Atraccion implements Sugerible {
 
 	private String nombre;
 	protected int costoDeVisita;
@@ -60,16 +60,6 @@ public class Atraccion implements  Sugerible { // Comparable<Atraccion>,
 	public void agregarAtraccion(Sugerible sugerible, List<Atraccion> lista) {
 		lista.add((Atraccion) sugerible);
 	}
-/*
-	@Override
-	public int compareTo(Atraccion otra) {
-
-		if (costoDeVisita == otra.costoDeVisita) {
-			return (int) (this.tiempoNecesario - otra.tiempoNecesario) * -1;
-		}
-		return (this.costoDeVisita - otra.costoDeVisita) * -1;
-	}
-	*/
 	
 	@Override
 	public void imprimirOferta() {
@@ -79,14 +69,6 @@ public class Atraccion implements  Sugerible { // Comparable<Atraccion>,
 		System.out.println("La duración aproximada del recorrido es de: " + this.getTiempoNecesario() + " horas.");
 		System.out.println("-----------------------------------------------------------------");
 	}
-	
-	/*
-	public static void ordenarPorMayorCostoYtiempo(List<Atraccion> arrayAtracciones) {		
-		// El sort obtiene el método de órden de compareTo, por lo tanto actualmente
-		// debe ordenar por TipoDeAtraccion, costo y luego por tiempo.
-		Collections.sort(arrayAtracciones);
-	}
-*/
 	
 	@Override
 	public int hashCode() {

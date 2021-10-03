@@ -1,58 +1,54 @@
 package turismoEnLaTierraMedia;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
 
-public class ComparadorDeSugeribles implements Comparable<Sugerible> {
-	private Sugerible sugerible;
-	private Usuario usuario;
+public class ComparadorDeSugeribles implements Comparator<Sugerible> {
+
+	private TipoDeAtraccion preferida;
+	
+	public ComparadorDeSugeribles (TipoDeAtraccion tipo) {
+		this.preferida = tipo;
+	}
 	
 	@Override
-	public int compareTo(Sugerible otra) {
+	public int compare(Sugerible sugerible, Sugerible otra) {
 
-		TipoDeAtraccion preferida = this.usuario.getAtraccionPreferida();
-
-		if (this.sugerible.getTipo() == preferida && otra.getTipo() == preferida) {
+		if (sugerible.getTipo() == preferida && otra.getTipo() == preferida) {
 			if (sugerible instanceof Promocion && otra instanceof Promocion) {
-				if (this.sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
-					return (int) (this.sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+				if (sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
+					return (int) (sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
 				}
-				return (this.sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
+				return (sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
 			} else if (sugerible instanceof Atraccion && otra instanceof Atraccion) {
-				if (this.sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
-					return (int) (this.sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+				if (sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
+					return (int) (sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
 				}
-				return (this.sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
+				return (sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
 			} else if (sugerible instanceof Atraccion) {
-				return -1;
+				return 1;
 			}
-			return 1;
-		}
-		if (this.sugerible.getTipo() != preferida && otra.getTipo() != preferida) {
-			if (sugerible instanceof Promocion && otra instanceof Promocion) {
-				if (this.sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
-					return (int) (this.sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
-				}
-				return (this.sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
-			} else if (sugerible instanceof Atraccion && otra instanceof Atraccion) {
-				if (this.sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
-					return (int) (this.sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
-				}
-				return (this.sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
-			} else if (sugerible instanceof Atraccion) {
-				return -1;
-			}
-			return 1;
-		}
-		if (this.sugerible.getTipo() != preferida && otra.getTipo() == preferida) {
 			return -1;
 		}
-		return 1;
-	}
-
-	public static void ordenar(List<Sugerible> listaSugeribles) {
-		Collections.sort(listaSugeribles);
+		if (sugerible.getTipo() != preferida && otra.getTipo() != preferida) {
+			if (sugerible instanceof Promocion && otra instanceof Promocion) {
+				if (sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
+					return (int) (sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+				}
+				return (sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
+			} else if (sugerible instanceof Atraccion && otra instanceof Atraccion) {
+				if (sugerible.getCostoDeVisita() == otra.getCostoDeVisita()) {
+					return (int) (sugerible.getTiempoNecesario() - otra.getTiempoNecesario()) * -1;
+				}
+				return (sugerible.getCostoDeVisita() - otra.getCostoDeVisita()) * -1;
+			} else if (sugerible instanceof Atraccion) {
+				return 1;
+			}
+			return -1;
+		}
+		if (sugerible.getTipo() != preferida){
+			return 1;
+		}
+		return -1;
 	}
 
 }

@@ -66,11 +66,9 @@ public class Usuario {
 	public boolean aceptaOferta(Sugerible sugerible ) { 
 									
 		sugerible.imprimirOferta();
-
 		System.out.println("¿Acepta la oferta?");
-
 		String respuesta = null, S = "Si", N = "No";
-
+		
 		do {
 			System.out.println("");
 			System.out.println("Por favor, ingrese Si o No");
@@ -91,7 +89,6 @@ public class Usuario {
 		return false;
 	}
 
-	
 	/* Con este método, creamos un panel gráfico que muestra las opciones Si o no, lo utilizamos para no tener que tipear la respuesta por consola y como método de firma personal del grupo 404
 	 * Además de retornar el valor necesario para el método aceptaOferta, también lo muestra por consola para cumplir con la premisa de que la interacción se vea representada en la consola.
 	 * 
@@ -101,7 +98,7 @@ public class Usuario {
 		int seleccion = JOptionPane.showOptionDialog(null, "¿Acepta la compra?", "Seleccione opcion",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, // null para icono por defecto.
 				null, new Object[] { "Si", "No" }, null);
-
+		
 		if (seleccion == 0) {
 			System.out.println("Si");
 			return "Si";
@@ -112,15 +109,12 @@ public class Usuario {
 
 	public void avisoCompraAceptada() {
 		JOptionPane.showMessageDialog(null, "Usted ha aceptado la oferta");
-
 		System.out.println("Usted ha aceptado la oferta");
 	}
 
 	public void avisoCompraNoAceptada() {
 		JOptionPane.showMessageDialog(null, "Usted no ha aceptado la oferta");
-
 		System.out.println("Usted no ha aceptado la oferta");
-
 	}
 	
 }
